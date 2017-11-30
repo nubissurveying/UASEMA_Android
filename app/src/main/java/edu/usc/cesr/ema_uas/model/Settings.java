@@ -100,11 +100,13 @@ public class Settings {
         for(int i = 0; i < surveys.size(); i++){
             double timeDiffInMin = ((double) (now.getTimeInMillis() - surveys.get(i).getDate().getTimeInMillis())) /  (60 * 1000);
             if(0 < timeDiffInMin && timeDiffInMin < Constants.TIME_TO_TAKE_SURVEY) return surveys.get(i);
+            else if( 0 < timeDiffInMin) surveys.get(i).setClosed();
         } return null;
     }
     public boolean shouldShowSurvey(Calendar calendar){
         Survey currentSurvey = getSurveyByTime(calendar);
-        return currentSurvey != null && !currentSurvey.isTaken() && !currentSurvey.isClosed();
+        return currentSurvey != null && !currentSurvey.isClosed();
+//        return currentSurvey != null && !currentSurvey.isTaken() && !currentSurvey.isClosed();
     }
 
     /** User logged in && ready to take surveys */
@@ -125,11 +127,12 @@ public class Settings {
     }
 
     /**Build alarm times as url param*/
-    public String alarmTimes(){
+    public String alarmTags(){
         JsonObject json = new JsonObject();
         if(surveys != null){
             for(int i = 0; i < surveys.size(); i++){
-                json.addProperty(String.valueOf(i + 1), DateUtil.stringifyTime(surveys.get(i).getDate()));
+                Survey cur = surveys.get(i);
+                json.addProperty(String.valueOf(i + 1), DateUtil.stringifyTime(cur.getDate()) + (cur.isAlarmed()?"T":"F") + (cur.isTaken()? "T":"F") +(cur.isClosed()? "T" :"F") );
             }
         }
         return json.toString();

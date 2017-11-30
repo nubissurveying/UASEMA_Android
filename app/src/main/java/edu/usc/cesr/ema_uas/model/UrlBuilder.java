@@ -48,7 +48,7 @@ public class UrlBuilder {
             "&date=" + Uri.encode(DateUtil.stringifyAll(now)) +
             "&starttime=" + Uri.encode(DateUtil.stringifyTime(settings.getBeginTime())) +
             "&endtime=" + Uri.encode(DateUtil.stringifyTime(settings.getEndTime())) +
-            "&pinginfo=" + (page.equals(PHONE_ALARM) ? Uri.encode(settings.alarmTimes()) : "");
+            "&pinginfo=" + (page.equals(PHONE_ALARM) ? Uri.encode(settings.alarmTags()) : "");
     }
 
     private static String baseURL = "https://uas.usc.edu/survey/uas/ema/daily/index.php";

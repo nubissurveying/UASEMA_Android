@@ -12,22 +12,34 @@ public class Survey implements Serializable {
     private boolean taken;
     private boolean closed;
 
+
+
+    private boolean alarmed;
+
     public Survey(int requestCode, Calendar date) {
         this.requestCode = requestCode;
         this.date = date;
         this.taken = false;
         this.closed = false;
+        this.alarmed = false;
     }
 
     @Override
     public String toString() {
-        return "Code: " + requestCode + " Taken: " + isTaken() + " closed: " + closed + " Date: " + DateUtil.stringifyAll(date);
+        return "Code: " + requestCode + " Alarmed: "+ isAlarmed()+  " Taken: " + isTaken() + " closed: " + closed + " Date: " + DateUtil.stringifyAll(date);
     }
 
     public int getRequestCode() {
         return requestCode;
     }
 
+    public boolean isAlarmed() {
+        return alarmed;
+    }
+
+    public void setAlarmed(boolean alarmed) {
+        this.alarmed = alarmed;
+    }
     public Calendar getDate() {
         return date;
     }

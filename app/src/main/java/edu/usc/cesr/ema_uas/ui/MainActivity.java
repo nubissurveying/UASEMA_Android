@@ -195,6 +195,11 @@ public class MainActivity extends AppCompatActivity {
             int requestCode = getIntent().getIntExtra(MyAlarmManager.REQUEST_CODE, 0);
             int surveyCode = Survey.getSurveyCode(requestCode);
             String timeTag = settings.getTimeTag(surveyCode);
+            Survey curr = settings.getSurveyByTime(now);
+            curr.setAlarmed(true);
+            if(hasInternet) settings.setTakenSurveyAndSave(this,curr.getRequestCode());
+            alarmManager.cancelSingleAlarm(this, curr.getRequestCode() + 1);
+
 
             showWebView(UrlBuilder.build(UrlBuilder.PHONE_ALARM, settings, Calendar.getInstance(), true)
                     + (timeTag == null ? "" : timeTag));
@@ -218,6 +223,7 @@ public class MainActivity extends AppCompatActivity {
             showWebView(UrlBuilder.build("testandroid", settings, now,  false));
             //showWebView(UrlBuilder.build(UrlBuilder.PHONE_START, settings, now,  false));
         }
+
     }
 
     public ProgressDialog getDialog() {
@@ -248,11 +254,11 @@ public class MainActivity extends AppCompatActivity {
 
                 CookieManager cookieManager = CookieManager.getInstance();
 
-                    cookieManager.setAcceptCookie(true);
-                    cookieManager.acceptCookie();
-                    cookieManager.setAcceptFileSchemeCookies(true);
-                    cookieManager.setCookie(url, cookie);
-                    Log.i("MainActivity", "add PHPSESSID to url " + cookie);
+                cookieManager.setAcceptCookie(true);
+                cookieManager.acceptCookie();
+                cookieManager.setAcceptFileSchemeCookies(true);
+                cookieManager.setCookie(url, cookie);
+                Log.i("MainActivity", "add PHPSESSID to url " + cookie);
 
 
 
@@ -260,6 +266,7 @@ public class MainActivity extends AppCompatActivity {
                 dialog.show();
                 webView.setVisibility(View.VISIBLE);
                 webView.loadUrl(url);
+
             } else {
                 webView.loadDataWithBaseURL(null, "<html><body><h3><font face=arial color=#5691ea>" +  "No internet connection detected. Make sure you are connected to the cellular network or wifi." + "</font></h3></body></html>", "text/html", "utf-8", null);
             }
