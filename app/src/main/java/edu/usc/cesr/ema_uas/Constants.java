@@ -13,7 +13,7 @@ public class Constants {
     private static final int TIME_TO_TAKE_SURVEY_DEV = 2;
     private static final int TIME_TO_REMINDER_DEV = 1;
 
-    public static final int TIME_TO_TAKE_SURVEY = isDemo ? TIME_TO_TAKE_SURVEY_DEV : TIME_TO_TAKE_SURVEY_PRO;
-    public static final int TIME_TO_REMINDER = isDemo ? TIME_TO_REMINDER_DEV : TIME_TO_REMINDER_PRO;
+    public static  int TIME_TO_TAKE_SURVEY = isDemo ? TIME_TO_TAKE_SURVEY_DEV : TIME_TO_TAKE_SURVEY_PRO;
+    public static  int TIME_TO_REMINDER = isDemo ? TIME_TO_REMINDER_DEV : TIME_TO_REMINDER_PRO;
     public static final String CookieKey = "CookieKeyForEMA";
 }

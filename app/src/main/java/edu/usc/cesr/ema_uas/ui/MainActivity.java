@@ -15,7 +15,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
-import android.nfc.Tag;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -31,7 +30,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.webkit.CookieManager;
-import android.webkit.CookieSyncManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.EditText;
@@ -46,12 +44,14 @@ import butterknife.ButterKnife;
 import edu.usc.cesr.ema_uas.BuildConfig;
 import edu.usc.cesr.ema_uas.Constants;
 import edu.usc.cesr.ema_uas.R;
+import edu.usc.cesr.ema_uas.Service.AccelerometerService;
 import edu.usc.cesr.ema_uas.alarm.MyAlarmManager;
-import edu.usc.cesr.ema_uas.alarm.MyNotificationManager;
+import edu.usc.cesr.ema_uas.model.JSONParser;
 import edu.usc.cesr.ema_uas.model.LocalCookie;
 import edu.usc.cesr.ema_uas.model.Settings;
 import edu.usc.cesr.ema_uas.model.Survey;
 import edu.usc.cesr.ema_uas.model.UrlBuilder;
+import edu.usc.cesr.ema_uas.util.AcceFileManager;
 import edu.usc.cesr.ema_uas.util.LogUtil;
 import edu.usc.cesr.ema_uas.webview.MyChromeViewClient;
 import edu.usc.cesr.ema_uas.webview.MyWebViewClient;
@@ -85,6 +85,9 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         alarmManager = MyAlarmManager.getInstance(this);
         //  mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
+        //JSONParser tester
+        JSONParser.updateSettingSample();
 
         dialog = new ProgressDialog(this);
         dialog.setMessage(getResources().getString(R.string.main_loading));
@@ -156,8 +159,8 @@ public class MainActivity extends AppCompatActivity {
         else showWebView(url);
 
 
-
-
+        Intent accelermoterIntent = new Intent(this, AccelerometerService.class);
+        startService(accelermoterIntent);
     }
 
 
@@ -177,6 +180,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void route(Settings settings){
         Calendar now = Calendar.getInstance();
+        if (settings.isLoggedIn()){
+            // start accelermoter service
+            AcceFileManager.initFile(this,settings.getRtid());
+        }
 
         //  User is logged in and during survey
         if(settings.isLoggedIn() && settings.allFieldsSet() && settings.shouldShowSurvey(now)) {

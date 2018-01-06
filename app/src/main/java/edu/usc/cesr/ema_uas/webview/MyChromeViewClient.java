@@ -13,12 +13,14 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import edu.usc.cesr.ema_uas.Service.AccelerometerService;
 import edu.usc.cesr.ema_uas.alarm.MyAlarmManager;
 import edu.usc.cesr.ema_uas.model.LocalCookie;
 import edu.usc.cesr.ema_uas.model.Settings;
 import edu.usc.cesr.ema_uas.ui.AlarmActivity;
 import edu.usc.cesr.ema_uas.ui.MainActivity;
 import edu.usc.cesr.ema_uas.ui.SoundRecordingActivity;
+import edu.usc.cesr.ema_uas.util.AcceFileManager;
 
 public class MyChromeViewClient  extends WebChromeClient {
     private static final String END = "end", BEEP = "beep:",
@@ -67,6 +69,9 @@ public class MyChromeViewClient  extends WebChromeClient {
                 endCal.setTime(beginDate);
                 endCal.add(Calendar.DAY_OF_MONTH, 7); //just add 7 days..
 //              endCal.setTime(endDate);
+
+
+
 
                 Settings settings = activity.getSettings();
                 LocalCookie localCookie = activity.getLocalCookie();

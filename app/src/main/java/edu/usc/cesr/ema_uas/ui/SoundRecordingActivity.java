@@ -226,21 +226,8 @@ public class SoundRecordingActivity extends AppCompatActivity {
                 httpCom.serverInstructions = "";
                 httpCom.execute(); //doInBackground();//.get(210000, TimeUnit.MILLISECONDS);
 
-                /*
-                long startTime = System.currentTimeMillis();
-                while (httpCom.serverInstructions == "") {
-                    if ((System.currentTimeMillis() - startTime) > 5000) {
-                        break;
-                    } //timeout!
-                    // waiting until finished protected String[] doInBackground(Void... params)
-                }*/
                 HTTPReturnString = httpCom.serverInstructions;
 
-//				httpCom.execute().get(10000, TimeUnit.MILLISECONDS);
-			/*	while (HTTPReturnString == "") {
-				    try { Thread.sleep(100); }
-				    catch (InterruptedException e) { e.printStackTrace(); }
-				}*/
             } else {
                 httpCom.execute();
             }

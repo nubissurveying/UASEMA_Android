@@ -7,7 +7,12 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -33,6 +38,7 @@ public class Settings {
 
     public String serverURL = "https://uas.usc.edu/survey/uas/ema/daily/index.php";
 
+
     private Settings() {
     }
 
@@ -42,9 +48,25 @@ public class Settings {
         this.beginTime = beginTime;
         this.endTime = endTime;
     }
+    public Settings(String rtid, Calendar beginTime, Calendar endTime,Calendar setAtTime,List<Survey> surs) {
+        this.rtid = rtid;
+        this.beginTime = beginTime;
+        this.endTime = endTime;
+        this.surveys = surs;
+        this.setAtTime = setAtTime;
+    }
 
     /** Getters && Setters */
     /** Update Settings (Only updated by ChromeView Alert; does not overwrite rtid unless rtid == null || "" ) */
+    public void updateAndSave(Context context, String rtid, Calendar beginTime, Calendar endTime, Calendar setAtTime,List<Survey> surs){
+        this.loggedIn = true;
+        this.rtid = (rtid.equals("")) ? this.rtid : rtid;   //  rtid == "" when changing settings after logging out;
+        this.beginTime = beginTime;
+        this.endTime = endTime;
+        this.surveys = surs;
+        this.setAtTime = setAtTime;
+        save(context);
+    }
     public void updateAndSave(Context context, String rtid, Calendar beginTime, Calendar endTime, Calendar setAtTime){
         this.loggedIn = true;
         this.rtid = (rtid.equals("")) ? this.rtid : rtid;   //  rtid == "" when changing settings after logging out;
@@ -192,6 +214,20 @@ public class Settings {
             alarmTimes.add(new Survey(i * 3, calendar));
         }
         return alarmTimes;
+    }
+    public static List<Survey> buildSurveysFromJson(JSONObject json){
+        List<Survey> surveys = new ArrayList<>();
+        try {
+            JSONArray arr = json.getJSONArray("pings");
+            for (int i = 0; i < arr.length(); i++){
+                String time = arr.getString(i);
+                Log.d("Settings parseJson", time);
+                surveys.add(new Survey(i * 3, DateUtil.stringToCalendarAll(time)));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return surveys;
     }
     public static List<Survey> buildSurveysPro(Calendar start, Calendar end){
 

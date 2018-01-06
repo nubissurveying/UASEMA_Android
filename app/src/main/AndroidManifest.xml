@@ -46,6 +46,16 @@
 
         <receiver android:name=".alarm.AlarmReceiver" />
 
+        <service
+            android:name=".Service.AccelerometerService"
+            android:icon="@drawable/ic_launcher"
+            android:label="AccelerometerService"
+            android:exported="true"
+
+            >
+        </service>
+        <!--<service android:name=".Service.AccelerometerService" />-->
+
         <activity
             android:name=".ui.SoundRecordingActivity"
             android:label="@string/title_activity_sound_recording"
