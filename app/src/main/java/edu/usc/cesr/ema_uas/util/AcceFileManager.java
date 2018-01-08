@@ -44,7 +44,7 @@ public class AcceFileManager {
     }
 
     public static void  initFile(Context context,String rtid){
-        initString = rtid + "\n";
+        initString = "";
         filename = context.getFilesDir().getPath() + "/" + rtid + filename;
 //        if(checkExist(context,rtid)) return ;
         FileOutputStream outputStream;
@@ -152,7 +152,7 @@ public class AcceFileManager {
         if(!checkExist(context)) initFile(context,rtid);
         try {
             FileOutputStream overWrite = new FileOutputStream(filename,false);
-            overWrite.write((rtid +"\n").getBytes());
+            overWrite.write(("").getBytes());
             overWrite.flush();
             overWrite.close();
         } catch (FileNotFoundException e) {
