@@ -71,7 +71,7 @@ public class AccelerometerService extends Service implements SensorEventListener
 
         Notification notification = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_launcher)
-                .setContentTitle("UASEma")
+                .setContentTitle("UAS")
                 .setContentText("Collecting accelerometer data")
                 .setContentIntent(pendingIntent).build();
 
