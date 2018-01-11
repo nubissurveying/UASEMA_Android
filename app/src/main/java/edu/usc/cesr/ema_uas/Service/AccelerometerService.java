@@ -49,7 +49,7 @@ public class AccelerometerService extends Service implements SensorEventListener
     @Nullable
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Toast.makeText(this, "Service Started", Toast.LENGTH_LONG).show();
+//        Toast.makeText(this, "Service Started", Toast.LENGTH_LONG).show();
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         //registering Sensor
         mySensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);

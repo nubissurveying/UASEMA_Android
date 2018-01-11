@@ -35,6 +35,11 @@ public class Settings {
     private Calendar endTime;
     private List<Survey> surveys;
     private Calendar setAtTime;
+    private int accelrecording;
+    private int videorecording;
+
+
+
 
     public String serverURL = "https://uas.usc.edu/survey/uas/ema/daily/index.php";
 
@@ -48,23 +53,28 @@ public class Settings {
         this.beginTime = beginTime;
         this.endTime = endTime;
     }
-    public Settings(String rtid, Calendar beginTime, Calendar endTime,Calendar setAtTime,List<Survey> surs) {
+    public Settings(String rtid, Calendar beginTime, Calendar endTime,Calendar setAtTime,List<Survey> surs,int accelrecording, int videorecording) {
         this.rtid = rtid;
         this.beginTime = beginTime;
         this.endTime = endTime;
         this.surveys = surs;
         this.setAtTime = setAtTime;
+        this.accelrecording = accelrecording;
+        this.videorecording = videorecording;
     }
 
     /** Getters && Setters */
     /** Update Settings (Only updated by ChromeView Alert; does not overwrite rtid unless rtid == null || "" ) */
-    public void updateAndSave(Context context, String rtid, Calendar beginTime, Calendar endTime, Calendar setAtTime,List<Survey> surs){
+    public void updateAndSave(Context context, String rtid, Calendar beginTime, Calendar endTime, Calendar setAtTime,List<Survey> surs, int accelrecording, int videorecording){
         this.loggedIn = true;
         this.rtid = (rtid.equals("")) ? this.rtid : rtid;   //  rtid == "" when changing settings after logging out;
         this.beginTime = beginTime;
         this.endTime = endTime;
         this.surveys = surs;
         this.setAtTime = setAtTime;
+        this.accelrecording = accelrecording;
+        this.videorecording = videorecording;
+        Log.d("Settings", "update and save show surveys" + this.toString());
         save(context);
     }
     public void updateAndSave(Context context, String rtid, Calendar beginTime, Calendar endTime, Calendar setAtTime){
@@ -264,6 +274,8 @@ public class Settings {
                 "\n rtid: " + rtid +
                 "\n begin: " + DateUtil.stringifyAll(beginTime) +
                 "\n end: " + DateUtil.stringifyAll(endTime) +
+                "\n accelrecording: " + this.getAccelrecording() +
+                "\n videorecording: " + this.getVideorecording() +
                 "\n surveys: " + ((surveys != null) ? surveys.size() : "null") +
                 "\n" + stringifyAlarms(surveys);
     }
@@ -301,5 +313,22 @@ public class Settings {
         for(int i = surveys.size() - 1; i >= 0; i--){
             if(surveys.get(i).getDate().before(now)) return surveys.get(i);
         } return null;
+    }
+    public int getAccelrecording() {
+        return accelrecording;
+    }
+
+    public void setAccelrecording(int accelrecording) {
+        this.accelrecording = accelrecording;
+    }
+
+
+
+    public int getVideorecording() {
+        return videorecording;
+    }
+
+    public void setVideorecording(int videorecording) {
+        this.videorecording = videorecording;
     }
 }
