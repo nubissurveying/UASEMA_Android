@@ -15,7 +15,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
-import android.nfc.Tag;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -31,7 +30,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.webkit.CookieManager;
-import android.webkit.CookieSyncManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.EditText;
@@ -46,12 +44,14 @@ import butterknife.ButterKnife;
 import edu.usc.cesr.ema_uas.BuildConfig;
 import edu.usc.cesr.ema_uas.Constants;
 import edu.usc.cesr.ema_uas.R;
+import edu.usc.cesr.ema_uas.Service.AccelerometerService;
 import edu.usc.cesr.ema_uas.alarm.MyAlarmManager;
-import edu.usc.cesr.ema_uas.alarm.MyNotificationManager;
+import edu.usc.cesr.ema_uas.model.JSONParser;
 import edu.usc.cesr.ema_uas.model.LocalCookie;
 import edu.usc.cesr.ema_uas.model.Settings;
 import edu.usc.cesr.ema_uas.model.Survey;
 import edu.usc.cesr.ema_uas.model.UrlBuilder;
+import edu.usc.cesr.ema_uas.util.AcceFileManager;
 import edu.usc.cesr.ema_uas.util.LogUtil;
 import edu.usc.cesr.ema_uas.webview.MyChromeViewClient;
 import edu.usc.cesr.ema_uas.webview.MyWebViewClient;
@@ -85,6 +85,9 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         alarmManager = MyAlarmManager.getInstance(this);
         //  mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
+        //JSONParser tester
+//        JSONParser.updateSettingSample();
 
         dialog = new ProgressDialog(this);
         dialog.setMessage(getResources().getString(R.string.main_loading));
@@ -154,8 +157,9 @@ public class MainActivity extends AppCompatActivity {
         String url = getIntent().getStringExtra(URL);
         if(url == null) route(settings);
         else showWebView(url);
-
-
+        if(settings.getAccelrecording() == 1) {
+            startAcceService();
+        }
 
 
     }
@@ -178,6 +182,7 @@ public class MainActivity extends AppCompatActivity {
     private void route(Settings settings){
         Calendar now = Calendar.getInstance();
 
+
         //  User is logged in and during survey
         if(settings.isLoggedIn() && settings.allFieldsSet() && settings.shouldShowSurvey(now)) {
 //            Survey survey = settings.getSurveyByTime(Calendar.getInstance());
@@ -195,6 +200,11 @@ public class MainActivity extends AppCompatActivity {
             int requestCode = getIntent().getIntExtra(MyAlarmManager.REQUEST_CODE, 0);
             int surveyCode = Survey.getSurveyCode(requestCode);
             String timeTag = settings.getTimeTag(surveyCode);
+            Survey curr = settings.getSurveyByTime(now);
+            curr.setAlarmed(true);
+            if(hasInternet) settings.setTakenSurveyAndSave(this,curr.getRequestCode());
+            alarmManager.cancelSingleAlarm(this, curr.getRequestCode() + 1);
+
 
             showWebView(UrlBuilder.build(UrlBuilder.PHONE_ALARM, settings, Calendar.getInstance(), true)
                     + (timeTag == null ? "" : timeTag));
@@ -218,6 +228,7 @@ public class MainActivity extends AppCompatActivity {
             showWebView(UrlBuilder.build("testandroid", settings, now,  false));
             //showWebView(UrlBuilder.build(UrlBuilder.PHONE_START, settings, now,  false));
         }
+
     }
 
     public ProgressDialog getDialog() {
@@ -248,11 +259,11 @@ public class MainActivity extends AppCompatActivity {
 
                 CookieManager cookieManager = CookieManager.getInstance();
 
-                    cookieManager.setAcceptCookie(true);
-                    cookieManager.acceptCookie();
-                    cookieManager.setAcceptFileSchemeCookies(true);
-                    cookieManager.setCookie(url, cookie);
-                    Log.i("MainActivity", "add PHPSESSID to url " + cookie);
+                cookieManager.setAcceptCookie(true);
+                cookieManager.acceptCookie();
+                cookieManager.setAcceptFileSchemeCookies(true);
+                cookieManager.setCookie(url, cookie);
+                Log.i("MainActivity", "add PHPSESSID to url " + cookie);
 
 
 
@@ -260,6 +271,7 @@ public class MainActivity extends AppCompatActivity {
                 dialog.show();
                 webView.setVisibility(View.VISIBLE);
                 webView.loadUrl(url);
+
             } else {
                 webView.loadDataWithBaseURL(null, "<html><body><h3><font face=arial color=#5691ea>" +  "No internet connection detected. Make sure you are connected to the cellular network or wifi." + "</font></h3></body></html>", "text/html", "utf-8", null);
             }
@@ -487,7 +499,21 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-
+//    protected void onStop()
+//    {
+//        unregisterReceiver(this);
+//        super.onStop();
+//    }
+    public void  startAcceService(){
+        if(settings.getAccelrecording() == 1){
+            if (settings.getAccelrecording() == 1){
+                // start accelermoter service
+                Intent accelermoterIntent = new Intent(this, AccelerometerService.class);
+                startService(accelermoterIntent);
+                AcceFileManager.initFile(this,settings.getRtid());
+            }
+        }
+    }
 
 
 }

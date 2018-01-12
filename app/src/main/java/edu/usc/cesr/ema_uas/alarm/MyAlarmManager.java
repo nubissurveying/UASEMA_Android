@@ -89,6 +89,7 @@ public class MyAlarmManager {
         PendingIntent pendingIntent = buildPendingIntent(context, requestCode);
         pendingIntent.cancel();
         alarmManager.cancel(pendingIntent);
+        Log.e("TT", "MyAlarmManager => cancelSingleAlarm => Code: " + requestCode);
     }
 
     /** Helpers */

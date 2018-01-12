@@ -17,7 +17,10 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />  <!-- to record sound -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
-
+    <uses-feature android:name="android.hardware.camera2" android:required="true"></uses-feature>
+    <uses-feature android:name="android.hardware.camera"/>
+    <uses-feature android:name="android.hardware.camera.autofocus"/>
+    <uses-permission android:name="android.permission.CAMERA" ></uses-permission>
 
     <!-- <uses-permission android:name="android.permission.READ_PHONE_STATE" /> -->
     <application
@@ -46,6 +49,16 @@
 
         <receiver android:name=".alarm.AlarmReceiver" />
 
+        <service
+            android:name=".Service.AccelerometerService"
+            android:icon="@drawable/ic_launcher"
+            android:label="AccelerometerService"
+            android:exported="true"
+
+            >
+        </service>
+        <!--<service android:name=".Service.AccelerometerService" />-->
+
         <activity
             android:name=".ui.SoundRecordingActivity"
             android:label="@string/title_activity_sound_recording"
@@ -55,6 +68,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="edu.usc.cesr.ema_uas.ui.MainActivity" />
         </activity>
+
         <receiver android:name=".alarm.NotificationPublisher">]
             <intent-filter>
                 <action android:name="edu.usc.cesr.ema_uas.action.DISPLAY_NOTIFICATION"/>
