@@ -157,10 +157,8 @@ public class MainActivity extends AppCompatActivity {
         String url = getIntent().getStringExtra(URL);
         if(url == null) route(settings);
         else showWebView(url);
-        if(settings.getAccelrecording() == 1) {
-            startAcceService();
-        }
 
+        startAcceService();
 
     }
 
@@ -510,15 +508,21 @@ public class MainActivity extends AppCompatActivity {
 //        super.onStop();
 //    }
     public void  startAcceService(){
+        Log.d("TryToStartAccService", "enter start Acc");
+//        Intent accelermoterIntent = new Intent(this, AccelerometerService.class);
+//        startService(accelermoterIntent);
+//        AcceFileManager.initFile(this,settings.getRtid());
         if(settings.getAccelrecording() == 1){
-            if (settings.getAccelrecording() == 1){
-                // start accelermoter service
-                Intent accelermoterIntent = new Intent(this, AccelerometerService.class);
-                startService(accelermoterIntent);
-                AcceFileManager.initFile(this,settings.getRtid());
-            }
+            // start accelermoter service
+            Intent accelermoterIntent = new Intent(this, AccelerometerService.class);
+            startService(accelermoterIntent);
+            AcceFileManager.initFile(this,settings.getRtid());
+        } else {
+            Log.d("MainActivity", "acc service is not required to start");
         }
+
     }
+
 
 
 }
