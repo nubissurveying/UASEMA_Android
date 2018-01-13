@@ -210,6 +210,11 @@ public class MainActivity extends AppCompatActivity {
                     + (timeTag == null ? "" : timeTag));
             Log.e("MainActivity", "show survey");
 
+        //  User is logged in, is not during survey, and has not skipped previous but has no alarms set
+        }else if (settings.isLoggedIn() && settings.hasNoAlarms() && settings.allFieldsSet() && !settings.shouldShowSurvey(now) && !settings.skippedPrevious(now)){
+            showWebView(UrlBuilder.build(UrlBuilder.PHONE_NOALARMS, settings, now, true));
+
+
         //  User is logged in, is not during survey, and has not skipped previous
         }else if (settings.isLoggedIn() && settings.allFieldsSet() && !settings.shouldShowSurvey(now) && !settings.skippedPrevious(now)){
             showWebView(UrlBuilder.build(UrlBuilder.PHONE_START, settings, now, true));

@@ -146,6 +146,10 @@ public class Settings {
         return !(rtid == null || beginTime == null || endTime == null);
     }
 
+    public boolean hasNoAlarms(){
+        return surveys.size() == 0;
+    }
+
     /** Time Tag */
     public String getTimeTag(int requestCode){
         int position = requestCode / 3;
