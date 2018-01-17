@@ -97,7 +97,7 @@ public class AccelerometerService extends Service implements SensorEventListener
 
         long diffAppend = Calendar.getInstance().getTimeInMillis() - startAppend.getTimeInMillis() ;
         if(diff > SVMCalInterval) {
-            appendBuffer += DateUtil.stringifyAllDash(Calendar.getInstance()) + " " + acc +"\n";
+            appendBuffer += DateUtil.stringifyAll(Calendar.getInstance()) + " " + acc +"\n";
 //            Log.d("show curr acc", acc + "");
             acc = 0;
             start = Calendar.getInstance();

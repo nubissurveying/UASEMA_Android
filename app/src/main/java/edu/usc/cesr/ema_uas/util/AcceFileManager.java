@@ -45,7 +45,7 @@ public class AcceFileManager {
 
     public static void  initFile(Context context,String rtid){
         initString = "";
-        filename = context.getFilesDir().getPath() + "/" + rtid + filename;
+        filename = context.getFilesDir().getPath() + "/" + rtid +  "_acce_data_android.txt";
 //        if(checkExist(context,rtid)) return ;
         FileOutputStream outputStream;
 
@@ -56,7 +56,7 @@ public class AcceFileManager {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Log.d("on create", "acc file created");
+        Log.d("on create", "acc file created" + filename);
 
 
     }
