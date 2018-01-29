@@ -52,8 +52,9 @@ public class NubisHTTP extends AsyncTask<String, Integer, String> {
 		try {
 			publishProgress((int) 20);
 			if (delayedAnswer.getType() == NubisDelayedAnswer.N_GET){
-				String upLoadServerUri = settings.serverURL + "?ema=1&q=" + Encrypt(delayedAnswer.getGetString());
 
+				String upLoadServerUri = settings.serverURL + "?ema=1&q=" + Encrypt(delayedAnswer.getGetString());
+				Log.d("emcryp string", Encrypt(delayedAnswer.getGetString()));
 				URL url = new URL(upLoadServerUri);
 				HttpURLConnection conn = (HttpURLConnection) url.openConnection();  // Open a HTTP  connection to  the URL
 				serverResponseCode = conn.getResponseCode();
@@ -92,6 +93,7 @@ public class NubisHTTP extends AsyncTask<String, Integer, String> {
 			
 			else if (delayedAnswer.getType() == NubisDelayedAnswer.N_POST){
 				  String upLoadServerUri = settings.serverURL + "?ema=1&q=" + Encrypt(delayedAnswer.getGetString());
+				Log.d("emcryp string", Encrypt(delayedAnswer.getGetString()));
 			      URL url = new URL(upLoadServerUri);
 			      HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 	              conn.setDoInput(true); // Allow Inputs
@@ -115,8 +117,9 @@ public class NubisHTTP extends AsyncTask<String, Integer, String> {
 	               
 			}
 			else if (delayedAnswer.getType() == NubisDelayedAnswer.N_POST_FILE){
-//				 String serverURL = "http://10.120.66.69:8888/ema/index.php";
+//				 String serverURL = "http://10.120.65.133:8888/ema/index.php";
 				  String upLoadServerUri = settings.serverURL + "?ema=1&q=" + Encrypt(delayedAnswer.getGetString());
+				Log.d("emcryp string", Encrypt(delayedAnswer.getGetString()));
 					Log.d("uploadServerUri", upLoadServerUri);
 			      URL url = new URL(upLoadServerUri);
 			      HttpURLConnection conn = (HttpURLConnection) url.openConnection();
