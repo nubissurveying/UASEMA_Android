@@ -183,6 +183,7 @@ public class MainActivity extends AppCompatActivity {
 
         //  User is logged in and during survey
         if(settings.isLoggedIn() && settings.allFieldsSet() && settings.shouldShowSurvey(now)) {
+//        if(settings.isLoggedIn() && settings.allFieldsSet() && settings.shouldShowSurvey(now)) {
 //            Survey survey = settings.getSurveyByTime(Calendar.getInstance());
 //            Intent i = new Intent(this, AlarmActivity.class);
 //            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -336,11 +337,13 @@ public class MainActivity extends AppCompatActivity {
                 settings.clearAndSave(this);
                 this.getAlarmManager().cancelAllAlarms(getBaseContext());
                 webView.loadUrl(UrlBuilder.build(UrlBuilder.PHONE_LOGOUT, settings, Calendar.getInstance(), true));
+                webView.clearCache(true);
                 break;
             case R.id.menu_sound:
                     Intent intent2 = new Intent(MainActivity.this, SoundRecordingActivity.class);
                 startActivity(intent2);
                 break;
+
 
 
         }
