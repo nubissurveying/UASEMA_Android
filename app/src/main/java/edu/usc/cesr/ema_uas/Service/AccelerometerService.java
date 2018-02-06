@@ -52,10 +52,10 @@ public class AccelerometerService extends Service implements SensorEventListener
 //        Toast.makeText(this, "Service Started", Toast.LENGTH_LONG).show();
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         //registering Sensor
-        mySensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mySensor = mSensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
 
         mSensorManager.registerListener(this,
-                mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+                mSensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION),
                 SensorManager.SENSOR_DELAY_UI);
 
         //then you should return sticky
@@ -124,8 +124,8 @@ public class AccelerometerService extends Service implements SensorEventListener
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
     }
     public void calculateSVM(double x, double y, double z){
-//        Log.d("calculate svm", "" + (Math.sqrt(Math.pow(x,2) + Math.pow(y,2) + Math.pow(z,2)) - 1));
-        acc += Math.sqrt(Math.pow(x,2) + Math.pow(y,2) + Math.pow(z,2)) - 1;
+        Log.d("calculate svm", "" + (Math.sqrt(Math.pow(x,2) + Math.pow(y,2) + Math.pow(z,2))));
+        acc += Math.sqrt(Math.pow(x,2) + Math.pow(y,2) + Math.pow(z,2));
 
     }
     BroadcastReceiver networkAvailableReceiver = new BroadcastReceiver(){

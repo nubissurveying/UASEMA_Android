@@ -169,6 +169,8 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancelAll();
+        route(settings);
+
     }
 
     @Override

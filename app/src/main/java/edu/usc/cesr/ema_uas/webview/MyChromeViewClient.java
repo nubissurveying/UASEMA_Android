@@ -62,51 +62,7 @@ public class MyChromeViewClient  extends WebChromeClient {
             alarmManager.setAllAlarms(activity.getBaseContext(), settings.getSurveys());
             activity.invalidateOptionsMenu();
             activity.startAcceService();
-//            activity.logEvent(settings, MainActivity.SIGN_UP_EVENT);
-//            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd:hh:mm");
-//            try {
-//
-//                Log.e("TT", "MyChomeWebViewClient => " + message);
-//                Date beginDate = format.parse(date + ":" + "10:00"); //begin
-//                //Date endDate = format.parse(date + ":" + end);
-//                Calendar beginCal = Calendar.getInstance();
-//                Calendar endCal = Calendar.getInstance();
-//                beginCal.setTime(beginDate);
-//                endCal.setTime(beginDate);
-//                endCal.add(Calendar.DAY_OF_MONTH, 7); //just add 7 days..
-//              endCal.setTime(endDate);
-//
-//
-//
-//
-//                Settings settings = activity.getSettings();
-//                LocalCookie localCookie = activity.getLocalCookie();
-//
-//                if (true){
-//                //if (beginCal.getTimeInMillis() != settings.getBeginTime().getTimeInMillis()) { //only if different!
-//
-//                    MyAlarmManager alarmManager = activity.getAlarmManager();
-//
-//                    //  Cancel settings
-//                    alarmManager.cancelAllAlarms(activity.getBaseContext());
-//
-//                    //  Update settings
-////                    settings.updateAndSave(activity, rtid, beginCal, endCal, Calendar.getInstance());
-//
-//                    //  Set up alarms
-//                    alarmManager.setAllAlarms(activity.getBaseContext(), settings.getSurveys());
-//
-//                    //  Redraw menu
-//                    activity.invalidateOptionsMenu();
-//
-//
-//
-//
-//                }
-//                //  activity.logEvent(settings, MainActivity.SIGN_UP_EVENT);
-//            } catch (ParseException e) {
-//                e.printStackTrace();
-//            }
+
         } else if (message.startsWith(VIDEO)){
             try {
                 Intent i = new Intent(Intent.ACTION_VIEW);
