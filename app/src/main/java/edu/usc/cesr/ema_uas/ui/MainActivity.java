@@ -7,6 +7,7 @@ import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,11 +16,13 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
@@ -75,6 +78,8 @@ public class MainActivity extends AppCompatActivity {
     private LocalCookie localCookie;
     //  private FirebaseAnalytics mFirebaseAnalytics;
     private boolean hasInternet = true;
+
+    private NotificationManagerCompat manager;
 
     @SuppressWarnings({"deprecation", "ConstantConditions"})
     @SuppressLint("SetJavaScriptEnabled")
@@ -160,6 +165,10 @@ public class MainActivity extends AppCompatActivity {
 
         startAcceService();
 
+        manager = NotificationManagerCompat.from(this);
+        checkNotificaitonPremission();
+
+
     }
 
 
@@ -169,6 +178,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancelAll();
+        checkNotificaitonPremission();
         route(settings);
 
     }
@@ -178,7 +188,45 @@ public class MainActivity extends AppCompatActivity {
         dismissDialog();
         super.onDestroy();
     }
-
+    private void checkNotificaitonPremission(){
+//        if(manager.areNotificationsEnabled()){
+//            Log.d("NotificaitonPremission", "Notification enabled");
+//        } else {
+//            Log.d("NotificaitonPremission", "Notification not enabled");
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.BASE) {
+//
+//                ComponentName componetName = new ComponentName(
+//                        "com.android.settings",
+//                        "com.android.settings.applications.InstalledAppDetails");
+//                Intent intent= new Intent();
+//                intent.setAction("android.settings.APPLICATION_DETAILS_SETTINGS");
+//                intent.setData(Uri.parse("package:com.plusub.diapersapp"));
+//                intent.setComponent(componetName);
+//                startActivity(intent);
+//                return;
+//            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//
+//                Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+//                startActivity(intent);
+//                return;
+//            }
+//            return;
+//            dismissDialog();
+//            AlertDialog.Builder alert = new AlertDialog.Builder(this);
+//            alert.setTitle(getResources().getString(R.string.main_permissions_title_before));
+//            alert.setMessage(getResources().getString(R.string.main_permissions_body_before));
+//            alert.setPositiveButton(getResources().getString(R.string.Ok), new DialogInterface.OnClickListener() {
+//                public void onClick(DialogInterface dialog, int whichButton) {
+//
+//                    ActivityCompat.requestPermissions(getActivity(),
+//                            new String[]{ Manifest.permission.Noti },
+//                            ALL_PERMISSIONS_REQUEST_CODE);
+//
+//                }
+//            });
+//            alert.show();
+//        }
+    }
     private void route(Settings settings){
         Calendar now = Calendar.getInstance();
 

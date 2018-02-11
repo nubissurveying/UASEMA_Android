@@ -86,7 +86,7 @@ public class SoundRecordingActivity extends AppCompatActivity {
         recordButton.setImageResource(R.drawable.microphone);
         openEndedRecordVedioButton = (ImageButton) findViewById(R.id.openEndedRecordVedioButton);
         openEndedRecordVedioButton.setImageResource(R.drawable.video);
-        if(settings.getVideorecording() != 1) openEndedRecordVedioButton.setEnabled(false);
+//        if(settings.getVideorecording() != 1) openEndedRecordVedioButton.setEnabled(false);
         recordButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (numberOfRecordings > 1 && numberOfRecordings % 2 == 0) {
@@ -278,8 +278,10 @@ public class SoundRecordingActivity extends AppCompatActivity {
         intent.addCategory("android.intent.category.DEFAULT");
         intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT,4*60);
         intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY,0);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
+        }
 
-        startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
     }
 
 
