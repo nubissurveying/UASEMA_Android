@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        >
+        android:id="@+id/linearLayout">
 
 
         <com.beardedhen.androidbootstrap.BootstrapWell
@@ -24,13 +24,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="left"
-                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Press the microphone button to start recording. Press the button again to stop"
-                />
+                android:textAppearance="?android:attr/textAppearanceMedium" />
         </com.beardedhen.androidbootstrap.BootstrapWell>
 
-
-    <LinearLayout
+        <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -145,19 +143,23 @@
             android:textColor="@color/NubisWhite"
           />-->
 
-            <com.beardedhen.androidbootstrap.BootstrapButton
-                android:id="@+id/saveVideoButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="uploadVideo"
-                android:text="Save video"
-                app:bootstrapSize="lg"
-                app:buttonMode="regular"
-                app:roundedCorners="true"
-                app:showOutline="true" />
-
 
         </LinearLayout>
+
+        <com.beardedhen.androidbootstrap.BootstrapWell
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_margin="8dp"
+            app:bootstrapSize="xs">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:text="After video recording is done, please use play to review the video. When the review is done, you can upload the to the server. "
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </com.beardedhen.androidbootstrap.BootstrapWell>
 
 
     </LinearLayout>

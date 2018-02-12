@@ -35,7 +35,7 @@ import edu.usc.cesr.ema_uas.model.Settings;
 import edu.usc.cesr.ema_uas.util.NubisDelayedAnswer;
 import edu.usc.cesr.ema_uas.util.NubisHTTP;
 
-import static edu.usc.cesr.ema_uas.R.id.saveVideoButton;
+//import static edu.usc.cesr.ema_uas.R.id.saveVideoButton;
 
 public class SoundRecordingActivity extends AppCompatActivity {
 
@@ -78,7 +78,7 @@ public class SoundRecordingActivity extends AppCompatActivity {
                 dispatchSaveIntent(v);
             }
         });
-        saveVideoButton = (com.beardedhen.androidbootstrap.BootstrapButton) findViewById(R.id.saveVideoButton);
+//        saveVideoButton = (com.beardedhen.androidbootstrap.BootstrapButton) findViewById(R.id.saveVideoButton);
 
         final Context context = this;
 
@@ -154,8 +154,8 @@ public class SoundRecordingActivity extends AppCompatActivity {
 
             }
             //else {
-                final Intent intent2 = new Intent(this, MainActivity.class);
-                startActivity(intent2);
+            final Intent intent2 = new Intent(this, MainActivity.class);
+            startActivity(intent2);
             //}
 
         }
@@ -273,14 +273,20 @@ public class SoundRecordingActivity extends AppCompatActivity {
 //        Intent intent = new Intent();
 //        intent.setClass(this,VideoRecorderActivity.class);
 //        startActivity(intent);
+        //system camera
+//        Intent intent = new Intent();
+//        intent.setAction("android.media.action.VIDEO_CAPTURE");
+//        intent.addCategory("android.intent.category.DEFAULT");
+//        intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT,4*60);
+//        intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY,0);
+//        if (intent.resolveActivity(getPackageManager()) != null) {
+//            startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
+//        }
+        // custom camera
         Intent intent = new Intent();
-        intent.setAction("android.media.action.VIDEO_CAPTURE");
-        intent.addCategory("android.intent.category.DEFAULT");
-        intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT,4*60);
-        intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY,0);
-        if (intent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
-        }
+        intent.setClass(this,VideoRecording.class);
+        startActivity(intent);
+
 
     }
 

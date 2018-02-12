@@ -45,4 +45,6 @@
     <string name="main_permissions_title_denied">Permission Denied.</string>
     <string name="main_permissions_body_denied">This app may require permissions to load user from download file.  If you do not have a user login id, please contact the UAS team at (213) 821 8859 or ptus-l@usc.edu for sign up id.</string>
     <string name="title_activity_sound_recording">SoundRecordingActivity</string>
+    <string name="record">Record</string>
+    <string name="_0">0</string>
 </resources>
