@@ -99,9 +99,7 @@ public class VideoRecording extends Activity implements SurfaceHolder.Callback {
         mBtnStartStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                text = 0;
-                textView.setText("00:00");
-                handler.postDelayed(runnable,1000);
+
                 if (mIsPlay) {
                     if (mediaPlayer != null) {
                         mIsPlay = false;
@@ -112,7 +110,9 @@ public class VideoRecording extends Activity implements SurfaceHolder.Callback {
                     }
                 }
                 if (!mStartedFlg) {
-
+                    text = 0;
+                    textView.setText("00:00");
+                    handler.postDelayed(runnable,1000);
                     mImageView.setVisibility(View.GONE);
                     if (mRecorder == null) {
                         mRecorder = new MediaRecorder();
@@ -192,6 +192,9 @@ public class VideoRecording extends Activity implements SurfaceHolder.Callback {
                                 camera.release();
                                 camera = null;
                             }
+                            text = 0;
+                            textView.setText("00:00");
+
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
