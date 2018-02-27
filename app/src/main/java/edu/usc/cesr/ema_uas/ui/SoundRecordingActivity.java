@@ -17,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
@@ -35,27 +36,47 @@ import edu.usc.cesr.ema_uas.model.Settings;
 import edu.usc.cesr.ema_uas.util.NubisDelayedAnswer;
 import edu.usc.cesr.ema_uas.util.NubisHTTP;
 
+
+
 //import static edu.usc.cesr.ema_uas.R.id.saveVideoButton;
 
 public class SoundRecordingActivity extends AppCompatActivity {
 
     private Settings settings;
 
-    private ImageButton recordButton;
-    private ImageButton openEndedRecordVedioButton;
-    private com.beardedhen.androidbootstrap.BootstrapButton saveButton;
-    private com.beardedhen.androidbootstrap.BootstrapButton saveVideoButton ;
-    private MediaRecorder mRecorder = null;
+
     private boolean recording = false;
     private boolean soundrecorded = false;
     private int numberOfRecordings = 0;
     private String mFileName;
     private String mVedioFileName;
     private boolean videoUploaded = true;
+    private MediaRecorder mRecorder = null;
+    private int timer = 0;
 
+    private ImageButton recordButton;
+    private ImageButton openEndedRecordVedioButton;
+    private com.beardedhen.androidbootstrap.BootstrapButton saveButton;
+    private com.beardedhen.androidbootstrap.BootstrapButton saveVideoButton ;
+    private com.beardedhen.androidbootstrap.BootstrapWell videoInstrctorWell;
+    private TextView audioTimer;
+    private TextView videoInstructor;
     private Timer RecordingTimer;
 
     String HTTPReturnString = "";
+    private android.os.Handler handler = new android.os.Handler();
+    private Runnable runnable = new Runnable() {
+      @Override
+      public void run() {
+        timer++;
+        int sec = timer % 60;
+        String secText = (sec < 10? "0" : "") + sec;
+        int min = timer / 60;
+        String minText = (min < 10? "0" : "") + min;
+        audioTimer.setText(minText + ":" + secText);
+        handler.postDelayed(this,1000);
+      }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,12 +108,15 @@ public class SoundRecordingActivity extends AppCompatActivity {
         openEndedRecordVedioButton = (ImageButton) findViewById(R.id.openEndedRecordVedioButton);
         openEndedRecordVedioButton.setImageResource(R.drawable.video);
 //        if(settings.getVideorecording() != 1) openEndedRecordVedioButton.setEnabled(false);
+        audioTimer = (TextView)findViewById(R.id.audioTimer);
+        videoInstructor = (TextView)findViewById(R.id.videoInstructor);
+        videoInstrctorWell = (com.beardedhen.androidbootstrap.BootstrapWell) findViewById(R.id.videoInstrctorWell);
         recordButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if (numberOfRecordings > 1 && numberOfRecordings % 2 == 0) {
                     AlertDialog.Builder alert = new AlertDialog.Builder(context);
                     alert.setTitle("This will overwrite your previously recorded message. Are you sure you want to continue?");
-                    //alert.setTitle("请输入密码");
+
                     // Set an EditText view to get user input
                     alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
@@ -117,7 +141,16 @@ public class SoundRecordingActivity extends AppCompatActivity {
 
         mFileName = Environment.getExternalStorageDirectory().getPath() + "/" + "sound" + ".3gp";
         mVedioFileName = "/storage/emulated/0/DCIM/Camera/VID_";
+        showVideo();
 
+    }
+    public void showVideo(){
+        if(settings.getVideorecording() == 0){
+            openEndedRecordVedioButton.setVisibility(View.INVISIBLE);
+            videoInstructor.setVisibility(View.INVISIBLE);
+            videoInstrctorWell.setVisibility(View.INVISIBLE);
+
+        }
     }
 
     public void dispatchSaveIntent(View v) {
@@ -172,6 +205,7 @@ public class SoundRecordingActivity extends AppCompatActivity {
             recording = false;
             soundrecorded = true;
             recordButton.setImageResource(R.drawable.microphone_check);
+            handler.removeCallbacks(runnable);
         }
     }
 
@@ -214,7 +248,7 @@ public class SoundRecordingActivity extends AppCompatActivity {
             }
             mRecorder.start();
             recording = true;
-
+            startTimer();
             //Try in 6 minutes
             int delay2 = 60 * 4; //1 minute
             RecordingTimer = new Timer();
@@ -236,6 +270,11 @@ public class SoundRecordingActivity extends AppCompatActivity {
             }, 1000 * delay2, 1000000);
 
         }
+    }
+    public void startTimer(){
+      timer = 0;
+      audioTimer.setText("00:00");
+      handler.postDelayed(runnable, 1000);
     }
 
     public void upLoad(NubisDelayedAnswer delayedAnswer, boolean wait, int deleteId, int communicationType) {

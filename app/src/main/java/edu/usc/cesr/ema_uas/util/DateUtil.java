@@ -13,6 +13,10 @@ public class DateUtil {
         SimpleDateFormat format = new SimpleDateFormat("kk:mm");
         return (calendar == null) ? "null" : format.format(calendar.getTime());
     }
+    public static String stringifyTimeHuman(Calendar calendar){
+        SimpleDateFormat format = new SimpleDateFormat("MMMM dd, h:mma");
+        return (calendar == null) ? "null" : format.format(calendar.getTime());
+    }
     public static String stringifyDate(Calendar calendar){
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         return (calendar == null) ? "null" : format.format(calendar.getTime());
