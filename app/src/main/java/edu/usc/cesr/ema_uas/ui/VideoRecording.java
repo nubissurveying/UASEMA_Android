@@ -167,7 +167,8 @@ public class VideoRecording extends Activity implements SurfaceHolder.Callback {
                     //stop
                     if (mStartedFlg) {
                         try {
-                            handler.removeCallbacks(runnable);
+
+
                             mRecorder.stop();
                             mRecorder.reset();
                             mRecorder.release();

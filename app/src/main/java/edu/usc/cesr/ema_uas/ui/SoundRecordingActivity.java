@@ -5,7 +5,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Bundle;
@@ -53,15 +55,19 @@ public class SoundRecordingActivity extends AppCompatActivity {
     private boolean videoUploaded = true;
     private MediaRecorder mRecorder = null;
     private int timer = 0;
+    private boolean isPlaying = false;
 
     private ImageButton recordButton;
     private ImageButton openEndedRecordVedioButton;
+    private com.beardedhen.androidbootstrap.BootstrapButton audioPlayButton;
     private com.beardedhen.androidbootstrap.BootstrapButton saveButton;
     private com.beardedhen.androidbootstrap.BootstrapButton saveVideoButton ;
     private com.beardedhen.androidbootstrap.BootstrapWell videoInstrctorWell;
     private TextView audioTimer;
     private TextView videoInstructor;
     private Timer RecordingTimer;
+
+    private MediaPlayer mp;
 
     String HTTPReturnString = "";
     private android.os.Handler handler = new android.os.Handler();
@@ -91,20 +97,14 @@ public class SoundRecordingActivity extends AppCompatActivity {
             getSupportActionBar().setIcon(R.drawable.uas_logo);
         }
 
-        saveButton = (com.beardedhen.androidbootstrap.BootstrapButton) findViewById(R.id.saveOpenEndedButton);
-        saveButton.setEnabled(false);
-        //saveButton.setText(((NubisApplication)getApplicationContext()).settings.texts.getText("saveResponsesButton"));
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                dispatchSaveIntent(v);
-            }
-        });
+
 //        saveVideoButton = (com.beardedhen.androidbootstrap.BootstrapButton) findViewById(R.id.saveVideoButton);
 
         final Context context = this;
 
         recordButton = (ImageButton) findViewById(R.id.openEndedRecordSoundPictureButton);
         recordButton.setImageResource(R.drawable.microphone);
+        audioPlayButton = (com.beardedhen.androidbootstrap.BootstrapButton) findViewById(R.id.audioPlayButton);
         openEndedRecordVedioButton = (ImageButton) findViewById(R.id.openEndedRecordVedioButton);
         openEndedRecordVedioButton.setImageResource(R.drawable.video);
 //        if(settings.getVideorecording() != 1) openEndedRecordVedioButton.setEnabled(false);
@@ -138,11 +138,64 @@ public class SoundRecordingActivity extends AppCompatActivity {
                 }
             }
         });
+        saveButton = (com.beardedhen.androidbootstrap.BootstrapButton) findViewById(R.id.saveOpenEndedButton);
+        saveButton.setEnabled(false);
+
+        //saveButton.setText(((NubisApplication)getApplicationContext()).settings.texts.getText("saveResponsesButton"));
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                dispatchSaveIntent(v);
+            }
+        });
+        audioPlayButton.setEnabled(false);
+        audioPlayButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                audioPlay();
+            }
+        });
 
         mFileName = Environment.getExternalStorageDirectory().getPath() + "/" + "sound" + ".3gp";
         mVedioFileName = "/storage/emulated/0/DCIM/Camera/VID_";
         showVideo();
 
+
+
+    }
+    public void audioPlay(){
+
+        if(!isPlaying){
+            try {
+                mp = new MediaPlayer();
+                mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mp) {
+                        audioPlayButton.setText("Play");
+                        isPlaying = false;
+                    }
+                });
+                mp.setDataSource(mFileName);
+                mp.prepare();
+                mp.start();
+                audioPlayButton.setText("Stop");
+                isPlaying = true;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            stopPlaying();
+            audioPlayButton.setText("Play");
+            isPlaying = false;
+        }
+
+    }
+
+    private void stopPlaying() {
+        if (mp != null) {
+            mp.stop();
+            mp.release();
+            mp = null;
+        }
     }
     public void showVideo(){
         if(settings.getVideorecording() == 0){
@@ -206,6 +259,9 @@ public class SoundRecordingActivity extends AppCompatActivity {
             soundrecorded = true;
             recordButton.setImageResource(R.drawable.microphone_check);
             handler.removeCallbacks(runnable);
+
+
+
         }
     }
 
@@ -221,6 +277,9 @@ public class SoundRecordingActivity extends AppCompatActivity {
             }
             this.stopRecording();
             saveButton.setEnabled(true);
+            audioPlayButton.setEnabled(true);
+            audioPlayButton.setTextColor(Color.BLACK);
+            saveButton.setTextColor(Color.BLACK);
 
         }
         else { //start recording

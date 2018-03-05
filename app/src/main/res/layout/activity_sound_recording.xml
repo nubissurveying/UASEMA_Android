@@ -70,15 +70,31 @@
 
 
             <com.beardedhen.androidbootstrap.BootstrapButton
+                android:id="@+id/audioPlayButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginRight="10dp"
+                android:width="150dp"
+                android:text="Play"
+                android:textColor="@color/NubisGray"
+                app:bootstrapSize="lg"
+                app:buttonMode="regular"
+                app:roundedCorners="true"
+                app:showOutline="true" />
+
+            <com.beardedhen.androidbootstrap.BootstrapButton
                 android:id="@+id/saveOpenEndedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Save recording"
+                android:layout_gravity="left"
+                android:width="150dp"
+                android:text="Upload"
+                android:textColor="@color/NubisGray"
                 app:bootstrapSize="lg"
                 app:buttonMode="regular"
-                app:showOutline="true"
                 app:roundedCorners="true"
-                />
+                app:showOutline="true" />
 
         </LinearLayout>
 
