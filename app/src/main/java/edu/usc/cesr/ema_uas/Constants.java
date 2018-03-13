@@ -15,5 +15,10 @@ public class Constants {
 
     public static  int TIME_TO_TAKE_SURVEY = isDemo ? TIME_TO_TAKE_SURVEY_DEV : TIME_TO_TAKE_SURVEY_PRO;
     public static  int TIME_TO_REMINDER = isDemo ? TIME_TO_REMINDER_DEV : TIME_TO_REMINDER_PRO;
+
     public static final String CookieKey = "CookieKeyForEMA";
+
+    public static int AUDIO_DURATION_UP_LIMITE = 4 * 60;
+    public static int AUDIO_DURATION_DOWN_LIMITE = 10;
+
 }

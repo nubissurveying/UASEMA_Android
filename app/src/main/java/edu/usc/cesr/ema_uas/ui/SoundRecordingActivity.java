@@ -1,5 +1,6 @@
 package edu.usc.cesr.ema_uas.ui;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -33,6 +34,7 @@ import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import edu.usc.cesr.ema_uas.Constants;
 import edu.usc.cesr.ema_uas.R;
 import edu.usc.cesr.ema_uas.model.Settings;
 import edu.usc.cesr.ema_uas.util.NubisDelayedAnswer;
@@ -157,7 +159,7 @@ public class SoundRecordingActivity extends AppCompatActivity {
 
         mFileName = Environment.getExternalStorageDirectory().getPath() + "/" + "sound" + ".3gp";
         mVedioFileName = "/storage/emulated/0/DCIM/Camera/VID_";
-        showVideo();
+//        showVideo();
 
 
 
@@ -257,7 +259,7 @@ public class SoundRecordingActivity extends AppCompatActivity {
             mRecorder = null;
             recording = false;
             soundrecorded = true;
-            recordButton.setImageResource(R.drawable.microphone_check);
+//            recordButton.setImageResource(R.drawable.microphone_check);
             handler.removeCallbacks(runnable);
 
 
@@ -276,19 +278,50 @@ public class SoundRecordingActivity extends AppCompatActivity {
 
             }
             this.stopRecording();
-            saveButton.setEnabled(true);
-            audioPlayButton.setEnabled(true);
-            audioPlayButton.setTextColor(Color.BLACK);
-            saveButton.setTextColor(Color.BLACK);
+            if(timer >= Constants.AUDIO_DURATION_DOWN_LIMITE && timer <= Constants.AUDIO_DURATION_UP_LIMITE){
+                enablePlayAndUpload();
+                recordButton.setImageResource(R.drawable.microphone_check);
+            } else if (timer < Constants.AUDIO_DURATION_DOWN_LIMITE){
+                recordButton.setImageResource(R.drawable.microphone);
+
+                new AlertDialog.Builder(this)
+                        .setMessage("Too short, please record again")
+                        .setPositiveButton(android.R.string.ok, null)
+                        .show();
+//                Toast.makeText(this.getBaseContext(), "Audio duration should longer than " + Constants.AUDIO_DURATION_DOWN_LIMITE + "s", Toast.LENGTH_LONG).show();
+            } else {
+                recordButton.setImageResource(R.drawable.microphone);
+                new AlertDialog.Builder(this)
+                        .setMessage("Too long, please record again")
+                        .setPositiveButton(android.R.string.ok, null)
+                        .show();
+//                Toast.makeText(this.getBaseContext(), "Audio duration should shorter than " + Constants.AUDIO_DURATION_UP_LIMITE + "s", Toast.LENGTH_LONG).show();
+            }
+
 
         }
         else { //start recording
-            saveButton.setEnabled(false);
+            disablePlayAndUpload();
             this.startRecording();
             Toast.makeText(this.getBaseContext(), "Recording started...", Toast.LENGTH_LONG).show();
             // recordButton.setImageResource(R.drawable.icon);
         }
     }
+
+    public void enablePlayAndUpload(){
+        saveButton.setEnabled(true);
+        audioPlayButton.setEnabled(true);
+        audioPlayButton.setTextColor(Color.BLACK);
+        saveButton.setTextColor(Color.BLACK);
+    }
+
+    public void disablePlayAndUpload(){
+        saveButton.setEnabled(false);
+        audioPlayButton.setEnabled(false);
+        audioPlayButton.setTextColor(Color.GRAY);
+        saveButton.setTextColor(Color.GRAY);
+    }
+
 
 
     public void startRecording(){

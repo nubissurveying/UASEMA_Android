@@ -168,7 +168,7 @@ public class VideoRecording extends Activity implements SurfaceHolder.Callback {
                     if (mStartedFlg) {
                         try {
 
-
+                            handler.removeCallbacks(runnable);
                             mRecorder.stop();
                             mRecorder.reset();
                             mRecorder.release();
@@ -316,9 +316,9 @@ public class VideoRecording extends Activity implements SurfaceHolder.Callback {
     public String getSDPath() {
         File sdDir = null;
         boolean sdCardExist = Environment.getExternalStorageState()
-                .equals(android.os.Environment.MEDIA_MOUNTED); // 判断sd卡是否存在
+                .equals(android.os.Environment.MEDIA_MOUNTED);
         if (sdCardExist) {
-            sdDir = Environment.getExternalStorageDirectory();// 获取跟目录
+            sdDir = Environment.getExternalStorageDirectory();
             return sdDir.toString();
         }
 
@@ -332,7 +332,7 @@ public class VideoRecording extends Activity implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
-        // 将holder，这个holder为开始在onCreate里面取得的holder，将它赋给mSurfaceHolder
+
         mSurfaceHolder = surfaceHolder;
     }
 
