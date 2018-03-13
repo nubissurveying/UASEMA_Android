@@ -159,7 +159,7 @@ public class SoundRecordingActivity extends AppCompatActivity {
 
         mFileName = Environment.getExternalStorageDirectory().getPath() + "/" + "sound" + ".3gp";
         mVedioFileName = "/storage/emulated/0/DCIM/Camera/VID_";
-//        showVideo();
+        showVideo();
 
 
 
