@@ -230,9 +230,10 @@ public class MainActivity extends AppCompatActivity {
     private void route(Settings settings){
         Calendar now = Calendar.getInstance();
 
-
+//        UrlBuilder.build(UrlBuilder.PHONE_ALARM, settings, Calendar.getInstance(), true);
         //  User is logged in and during survey
         if(settings.isLoggedIn() && settings.allFieldsSet() && settings.shouldShowSurvey(now)) {
+//        if(true) {
 //        if(settings.isLoggedIn() && settings.allFieldsSet() && settings.shouldShowSurvey(now)) {
 //            Survey survey = settings.getSurveyByTime(Calendar.getInstance());
 //            Intent i = new Intent(this, AlarmActivity.class);

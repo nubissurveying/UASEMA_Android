@@ -21,6 +21,7 @@ import java.util.Random;
 
 import edu.usc.cesr.ema_uas.Constants;
 import edu.usc.cesr.ema_uas.util.DateUtil;
+import edu.usc.cesr.ema_uas.util.LogUtil;
 
 @SuppressWarnings({"FieldCanBeLocal", "WeakerAccess"})
 @SuppressLint("CommitPrefEdits")
@@ -168,9 +169,10 @@ public class Settings {
         if(surveys != null){
             for(int i = 0; i < surveys.size(); i++){
                 Survey cur = surveys.get(i);
-                json.addProperty(String.valueOf(i + 1), DateUtil.stringifyTime(cur.getDate()) + (cur.isAlarmed()?"T":"F") + (cur.isTaken()? "T":"F") +(cur.isClosed()? "T" :"F") );
+                json.addProperty(String.valueOf(i + 1), DateUtil.stringifyAll(cur.getDate())+ " " + cur.getRequestCode() + " "+ (cur.isAlarmed()?"T":"F") + (cur.isTaken()? "T":"F") +(cur.isClosed()? "T" :"F") );
             }
         }
+        LogUtil.e("json string", json.toString());
         return json.toString();
     }
 

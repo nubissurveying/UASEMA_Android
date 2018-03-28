@@ -36,10 +36,6 @@ public class DateUtil {
         }
         return cal;
     }
-    public static String stringifyAllDash(Calendar calendar){
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss");
-        return (calendar == null) ? "null" : format.format(calendar.getTime());
-    }
 
 
 }
