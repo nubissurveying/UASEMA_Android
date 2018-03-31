@@ -101,8 +101,8 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.white)));
         getSupportActionBar().setIcon(R.drawable.uas_logo);
 
-        IntentFilter networkAvailableFilter = new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE");
-        registerReceiver(networkAvailableReceiver, networkAvailableFilter);
+//        IntentFilter networkAvailableFilter = new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE");
+//        registerReceiver(networkAvailableReceiver, networkAvailableFilter);
 
         //invalidateOptionsMenu();
 
@@ -179,8 +179,18 @@ public class MainActivity extends AppCompatActivity {
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancelAll();
         checkNotificaitonPremission();
+        IntentFilter networkAvailableFilter = new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE");
+        registerReceiver(networkAvailableReceiver, networkAvailableFilter);
+
         route(settings);
 
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(networkAvailableReceiver);
     }
 
     @Override

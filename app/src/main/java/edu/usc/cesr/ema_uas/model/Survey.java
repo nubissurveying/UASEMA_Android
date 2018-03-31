@@ -4,6 +4,7 @@ import android.util.Log;
 
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.concurrent.TimeUnit;
 
 import edu.usc.cesr.ema_uas.util.DateUtil;
 
@@ -81,10 +82,11 @@ public class Survey implements Serializable {
     }
 
     public String getNotificationTag(Calendar now, int timeToReminder) {
-        int baseInd = requestCode / 3;
-        int elapsed = (int)(now.getTimeInMillis() - date.getTimeInMillis()/ 1000);
+        int baseInd = (requestCode / 3) * 2 + 2;
+//        int elapsed = (int)(now.getTimeInMillis() - date.getTimeInMillis()/ 1000);
+        long elapsed = (now.getTimeInMillis() - date.getTimeInMillis());
         Log.d("getNotificatinTag",DateUtil.stringifyAll(now) + " " + DateUtil.stringifyAll(date) + " " + elapsed);
-        if(elapsed < timeToReminder * 60){
+        if(elapsed < timeToReminder * 60 * 1000){
             baseInd -= 1;
         }
         return baseInd + "";

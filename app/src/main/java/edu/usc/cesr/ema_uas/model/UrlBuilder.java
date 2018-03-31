@@ -48,7 +48,7 @@ public class UrlBuilder {
             "&selecteddate=" + DateUtil.stringifyDate(settings.getBeginTime()) +    //  Not encoded?
             "&date=" + Uri.encode(DateUtil.stringifyAll(now)) +
             "&starttime=" + Uri.encode(DateUtil.stringifyTime(settings.getBeginTime())) +
-            "&endtime=" + Uri.encode(DateUtil.stringifyTime(settings.getEndTime())) + "&respondingto" + respondingTo +
+            "&endtime=" + Uri.encode(DateUtil.stringifyTime(settings.getEndTime())) + "&respondingto=" + respondingTo +
             "&pinginfo=" + (page.equals(PHONE_ALARM) ? Uri.encode(settings.alarmTags()) : "");
     }
 
