@@ -1,5 +1,7 @@
 package edu.usc.cesr.ema_uas.model;
 
+import android.util.Log;
+
 import java.io.Serializable;
 import java.util.Calendar;
 
@@ -14,6 +16,10 @@ public class Survey implements Serializable {
 
 
 
+    private boolean internet;
+
+
+
     private boolean alarmed;
 
     public Survey(int requestCode, Calendar date) {
@@ -22,11 +28,12 @@ public class Survey implements Serializable {
         this.taken = false;
         this.closed = false;
         this.alarmed = false;
+        this.internet = false;
     }
 
     @Override
     public String toString() {
-        return "Code: " + requestCode + " Alarmed: "+ isAlarmed()+  " Taken: " + isTaken() + " closed: " + closed + " Date: " + DateUtil.stringifyAll(date);
+        return "Code: " + requestCode + " Alarmed: "+ isAlarmed() + " Internet: "+ isInternet()+ " Taken: " + isTaken() + " closed: " + closed + " Date: " + DateUtil.stringifyAll(date);
     }
 
     public int getRequestCode() {
@@ -63,5 +70,24 @@ public class Survey implements Serializable {
 
     public static int getSurveyCode(int requestCode){
         return requestCode - (requestCode % 3);
+    }
+
+    public boolean isInternet() {
+        return internet;
+    }
+
+    public void setInternet(boolean internet) {
+        this.internet = internet;
+    }
+
+    public String getNotificationTag(Calendar now, int timeToReminder) {
+        int baseInd = requestCode / 3;
+        int elapsed = (int)(now.getTimeInMillis() - date.getTimeInMillis()/ 1000);
+        Log.d("getNotificatinTag",DateUtil.stringifyAll(now) + " " + DateUtil.stringifyAll(date) + " " + elapsed);
+        if(elapsed < timeToReminder * 60){
+            baseInd -= 1;
+        }
+        return baseInd + "";
+
     }
 }

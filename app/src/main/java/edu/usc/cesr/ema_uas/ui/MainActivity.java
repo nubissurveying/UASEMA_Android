@@ -252,12 +252,15 @@ public class MainActivity extends AppCompatActivity {
             String timeTag = settings.getTimeTag(surveyCode);
             Survey curr = settings.getSurveyByTime(now);
             curr.setAlarmed(true);
+            curr.setInternet(hasInternet);
+
             if(hasInternet) settings.setTakenSurveyAndSave(this,curr.getRequestCode());
             alarmManager.cancelSingleAlarm(this, curr.getRequestCode() + 1);
 
-
-            showWebView(UrlBuilder.build(UrlBuilder.PHONE_ALARM, settings, Calendar.getInstance(), true)
-                    + (timeTag == null ? "" : timeTag));
+            String respondingTo = curr.getNotificationTag(now,settings.getTimeToReminder());
+            showWebView(UrlBuilder.build(UrlBuilder.PHONE_ALARM, settings, Calendar.getInstance(), true, respondingTo));
+//            showWebView(UrlBuilder.build(UrlBuilder.PHONE_ALARM, settings, Calendar.getInstance(), true)
+//                    + (timeTag == null ? "" : timeTag));
             Log.e("MainActivity", "show survey");
 
         //  User is logged in, is not during survey, and has not skipped previous but has no alarms set

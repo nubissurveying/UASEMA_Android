@@ -40,7 +40,7 @@ public class UrlBuilder {
             TIME_MIDDLE = "&middle=1",
             TIME_LAST = "&last=1";
 
-    private static String buildParams(String page, Settings settings, Calendar now){
+    private static String buildParams(String page, Settings settings, Calendar now, String respondingTo){
         return "&rtid=" + (settings.getRtid() == null ? "" : Uri.encode(settings.getRtid())) +
             "&language=" + "en" +
             "&device=" + "android" +
@@ -48,14 +48,19 @@ public class UrlBuilder {
             "&selecteddate=" + DateUtil.stringifyDate(settings.getBeginTime()) +    //  Not encoded?
             "&date=" + Uri.encode(DateUtil.stringifyAll(now)) +
             "&starttime=" + Uri.encode(DateUtil.stringifyTime(settings.getBeginTime())) +
-            "&endtime=" + Uri.encode(DateUtil.stringifyTime(settings.getEndTime())) +
+            "&endtime=" + Uri.encode(DateUtil.stringifyTime(settings.getEndTime())) + "&respondingto" + respondingTo +
             "&pinginfo=" + (page.equals(PHONE_ALARM) ? Uri.encode(settings.alarmTags()) : "");
     }
 
     private static String baseURL = "https://uas.usc.edu/survey/uas/ema/daily/index.php";
 
     public static String build(String page, Settings settings, Calendar now, boolean includeParams){
-        String response = baseURL + "?ema=1&p=" + page + (includeParams ? buildParams(page, settings, now) : "");
+        String response = baseURL + "?ema=1&p=" + page + (includeParams ? buildParams(page, settings, now,"") : "");
+        LogUtil.e("TT", "UrlBuilder => build() == " + response);
+        return response;
+    }
+    public static String build(String page, Settings settings, Calendar now, boolean includeParams, String respondingTo){
+        String response = baseURL + "?ema=1&p=" + page + (includeParams ? buildParams(page, settings, now,respondingTo) : "");
         LogUtil.e("TT", "UrlBuilder => build() == " + response);
         return response;
     }

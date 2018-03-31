@@ -41,6 +41,11 @@ public class Settings {
 
 
 
+    private int timeToTakeSurvey = 8;
+    private int timeToReminder = 1;
+
+
+
 
     public String serverURL = "https://uas.usc.edu/survey/uas/ema/daily/index.php";
 
@@ -169,7 +174,7 @@ public class Settings {
         if(surveys != null){
             for(int i = 0; i < surveys.size(); i++){
                 Survey cur = surveys.get(i);
-                json.addProperty(String.valueOf(i + 1), DateUtil.stringifyAll(cur.getDate())+ " " + cur.getRequestCode() + " "+ (cur.isAlarmed()?"T":"F") + (cur.isTaken()? "T":"F") +(cur.isClosed()? "T" :"F") );
+                json.addProperty(String.valueOf(i + 1), DateUtil.stringifyAll(cur.getDate())+ " " + cur.getRequestCode() + " "+ (cur.isAlarmed()?"T":"F") + (cur.isInternet() ? "T":"F") + (cur.isTaken()? "T":"F") +(cur.isClosed()? "T" :"F") );
             }
         }
         LogUtil.e("json string", json.toString());
@@ -336,5 +341,20 @@ public class Settings {
 
     public void setVideorecording(int videorecording) {
         this.videorecording = videorecording;
+    }
+    public int getTimeToTakeSurvey() {
+        return timeToTakeSurvey;
+    }
+
+    public void setTimeToTakeSurvey(int timeToTakeSurvey) {
+        this.timeToTakeSurvey = timeToTakeSurvey;
+    }
+
+    public int getTimeToReminder() {
+        return timeToReminder;
+    }
+
+    public void setTimeToReminder(int timeToReminder) {
+        this.timeToReminder = timeToReminder;
     }
 }
