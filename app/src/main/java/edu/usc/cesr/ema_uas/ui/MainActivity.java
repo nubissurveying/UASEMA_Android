@@ -135,6 +135,8 @@ public class MainActivity extends AppCompatActivity {
 
         settings = Settings.getInstance(this);
         LogUtil.e("TT", "MainActivity => settings == " + settings);
+        Constants.TIME_TO_REMINDER = settings.getTimeToReminder();
+        Constants.TIME_TO_TAKE_SURVEY = settings.getTimeToTakeSurvey();
 
         // No longer reading participant id from downloaded apk
         // if(settings.getRtid() == null){
