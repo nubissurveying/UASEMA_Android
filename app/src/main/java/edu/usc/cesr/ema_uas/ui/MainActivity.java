@@ -53,6 +53,7 @@ import edu.usc.cesr.ema_uas.model.JSONParser;
 import edu.usc.cesr.ema_uas.model.LocalCookie;
 import edu.usc.cesr.ema_uas.model.Settings;
 import edu.usc.cesr.ema_uas.model.Survey;
+import edu.usc.cesr.ema_uas.model.Texts;
 import edu.usc.cesr.ema_uas.model.UrlBuilder;
 import edu.usc.cesr.ema_uas.util.AcceFileManager;
 import edu.usc.cesr.ema_uas.util.LogUtil;
@@ -65,6 +66,10 @@ public class MainActivity extends AppCompatActivity {
     private WebView webView;
     private ProgressDialog dialog;
     private Settings settings;
+
+
+
+    private Texts texts;
     private MyAlarmManager alarmManager;
 
     public LocalCookie getLocalCookie() {
@@ -134,7 +139,10 @@ public class MainActivity extends AppCompatActivity {
         webView.setWebChromeClient(new MyChromeViewClient(this));
 
         settings = Settings.getInstance(this);
+        texts = Texts.getInstance(this);
         LogUtil.e("TT", "MainActivity => settings == " + settings);
+        LogUtil.e("TT", "MainActivity => Texts == " + texts);
+
         Constants.TIME_TO_REMINDER = settings.getTimeToReminder();
         Constants.TIME_TO_TAKE_SURVEY = settings.getTimeToTakeSurvey();
 
@@ -308,6 +316,9 @@ public class MainActivity extends AppCompatActivity {
     public Settings getSettings() {
         return settings;
     }
+    public Texts getTexts() {
+        return texts;
+    }
 
     public MyAlarmManager getAlarmManager() {
         return alarmManager;
@@ -401,6 +412,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.menu_logout:
                 settings.clearAndSave(this);
+                texts.clearAndSave(this);
                 this.getAlarmManager().cancelAllAlarms(getBaseContext());
                 webView.loadUrl(UrlBuilder.build(UrlBuilder.PHONE_LOGOUT, settings, Calendar.getInstance(), true));
                 webView.clearCache(true);

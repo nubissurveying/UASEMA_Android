@@ -60,6 +60,7 @@ public class JSONParser {
             settings.setTimeToTakeSurvey( json.getInt("windowopen")/60);
             settings.setTimeToReminder(json.getInt("reminder")/60);
             Log.d("JSONParser", "try parse web json contains rtid" + settings.toString());
+
             return settings;
 
         } catch (JSONException e) {

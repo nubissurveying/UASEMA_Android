@@ -18,6 +18,7 @@ import edu.usc.cesr.ema_uas.alarm.MyAlarmManager;
 import edu.usc.cesr.ema_uas.model.JSONParser;
 import edu.usc.cesr.ema_uas.model.LocalCookie;
 import edu.usc.cesr.ema_uas.model.Settings;
+import edu.usc.cesr.ema_uas.model.Texts;
 import edu.usc.cesr.ema_uas.ui.AlarmActivity;
 import edu.usc.cesr.ema_uas.ui.MainActivity;
 import edu.usc.cesr.ema_uas.ui.SoundRecordingActivity;
@@ -56,6 +57,10 @@ public class MyChromeViewClient  extends WebChromeClient {
             Settings settings = activity.getSettings();
             Settings jsonSetting = JSONParser.updateSettingSample(message);
             settings.updateAndSave(activity,jsonSetting.getRtid(),jsonSetting.getBeginTime(),jsonSetting.getEndTime(),jsonSetting.getBeginTime(), jsonSetting.getSurveys(), jsonSetting.getAccelrecording(), jsonSetting.getVideorecording());
+
+            Texts texts = activity.getTexts();
+            texts.updateTextSettings(activity, message);
+
             MyAlarmManager alarmManager = activity.getAlarmManager();
             alarmManager.cancelAllAlarms(activity.getBaseContext());
             //  Set up alarms
