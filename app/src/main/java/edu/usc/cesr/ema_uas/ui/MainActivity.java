@@ -364,6 +364,11 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu){
+
+        for(int i = 0; i < menu.size(); i++){
+            menu.getItem(i).setTitle(texts.getMenu(i + (i > 2 ? -1 : 0)));
+        }
+
         if(settings.allFieldsSet()){  //
             menu.getItem(2).setEnabled(hasInternet); //depending on internet connection
             menu.getItem(5).setEnabled(true);  //logout button
@@ -512,9 +517,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showAdminPasswordDialog(){
+        texts = Texts.getInstance(this);
+        LogUtil.e("admin", texts.toString());
         dismissDialog();
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setTitle(getResources().getString(R.string.menu_admin_please_enter_password));
+        alert.setTitle(texts.getMenu(Texts.MenuContent.AdminPassword));
         final EditText input = new EditText(this);
         input.setSingleLine(true);
         input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
@@ -527,7 +534,7 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(new Intent(MainActivity.this, AdminActivity.class));
                     finish();
                 } else {
-                    Toast.makeText(getBaseContext(), getResources().getString(R.string.menu_admin_invalid_password), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getBaseContext(), texts.getToast(Texts.ToastContent.WrongPassword), Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -540,7 +547,7 @@ public class MainActivity extends AppCompatActivity {
 
         String formated = String.format(unformatted, versionName, (settings.getRtid() == null) ? "" : settings.getRtid(), buildSystemInfo());
         new AlertDialog.Builder(this)
-                .setTitle(getResources().getString(R.string.main_technicalissues_title))
+                .setTitle(texts.getMenu(Texts.MenuContent.TechIssue))
                 .setMessage(formated)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {

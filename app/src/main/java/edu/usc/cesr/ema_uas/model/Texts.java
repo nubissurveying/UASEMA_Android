@@ -24,16 +24,22 @@ public class Texts {
     private static String PTUS_TEXTS = "PTUS_TEXTS";
     private static Gson gson = new Gson();
 
-    private String[] defaultNotificaton = {"调查问卷准备好了"};
+    private String[] defaultNotificaton = {"Survey is ready", "No need to click after "};
+    private String[] toast = {"Logout", "Wrong password", "Please login first"};
 
 
 
-    private String[] defaultMenu = {"管理员","刷新","录音","技术问题","登出"};
+    private String[] defaultMenu = {"Admin","Refresh","Sound recording","Technical issue","Logout","Menu","Cancel","Please Enter the admin password"};
+    private String[] recording = {"Press the microphone button to start recording. Press the button again to stop and save.",
+            "After recording is done, you can save the recording. You can also start over with a new recording by pressing the microphone button again.",
+            "Make sure your video is longer then 10s and less then 4min. After recording, click use video to save and upload in recording result screen."};
 
 
     private static final String TAG = "Texts";
     private static final String NOTIFICATION_KEY = "notification";
     private static final String MENU_KEY = "menu";
+    private static final String TOAST_KEY = "toast";
+    private static final String RECORDING_KEY = "recording";
 
     private Texts(){}
 
@@ -42,7 +48,10 @@ public class Texts {
         Refresh(1),
         SoundRecording(2),
         TechIssue(3),
-        Logout(4);
+        Logout(4),
+        Menu(5),
+        Cancel(6),
+        AdminPassword(7);
         private int index;
         private MenuContent(int index){
             this.index = index;
@@ -52,17 +61,40 @@ public class Texts {
         }
     }
     public enum NotificationContent{
-        title(0);
+        title(0),
+        message(1);
 
         private int index;
         private NotificationContent(int index){this.index = index;}
         public int getIndex(){return index;}
 
     }
+    public enum ToastContent {
+        Logout(0),
+        WrongPassword(1),
+        LoginAlert(2);
+        private int index;
+        private ToastContent(int index){this.index = index;}
+        public int getIndex(){return index;}
+    }
+    public enum RecordingContent{
+
+    }
+
+    public String getToast(ToastContent type){
+        if(type.getIndex() < toast.length){
+            return toast[type.getIndex()];
+        } else return "ToastType error";
+    }
 
     public String getNotification(NotificationContent type){
         if(type.getIndex() < defaultNotificaton.length)
             return defaultNotificaton[type.getIndex()];
+        else return "notificationType error";
+    }
+    public String getNotification(int index){
+        if(index < defaultNotificaton.length)
+            return defaultNotificaton[index];
         else return "notificationType error";
     }
 
@@ -72,9 +104,15 @@ public class Texts {
         else return "menuType error";
     }
 
+    public String getMenu(int index){
+        if(index < defaultMenu.length)
+            return defaultMenu[index];
+        else return "menuType error";
+    }
+
 
     public void updateTextSettings(Context context, String input){
-
+        Log.d(TAG , input);
         try {
             JSONObject json = new JSONObject(input).getJSONObject("text");
             Log.d(TAG, json.toString());
@@ -93,8 +131,28 @@ public class Texts {
                 Menu[i] = menuTemp.getString(i);
                 Log.d(TAG + "menu", i + ":" + Menu[i]);
             }
+
+            JSONArray toastTemp = json.getJSONArray(TOAST_KEY);
+            len = toastTemp.length();
+            String[] Toast = new String[len];
+            for(int i = 0; i < len; i++){
+                Toast[i] = toastTemp.getString(i);
+                Log.d(TAG + "toast", i + ":" + Toast[i]);
+            }
+
+            JSONArray recordTemp = json.getJSONArray(RECORDING_KEY);
+            len = recordTemp.length();
+            String[] record = new String[len];
+            for(int i = 0; i < len; i++){
+                record[i] = recordTemp.getString(i);
+                Log.d(TAG + "record", i + ":" + record[i]);
+            }
+
             this.setDefaultMenu(Menu);
             this.setDefaultNotificaton(Notificaton);
+            this.setToast(Toast);
+            this.setRecording(record);
+
             save(context);
 
         } catch (JSONException e) {
@@ -122,10 +180,18 @@ public class Texts {
         }
     }
     public void clearAndSave(Context context){
-        String[] resetNotificaton =  {"调查问卷准备好了"};
-        String[] resetMenu = {"管理员","刷新","录音","技术问题","登出"};
+        String[] resetNotificaton = {"Survey is ready", "No need to click after "};
+        String[] resettoast = {"Logout", "Wrong password", "Please login first"};
+        String[] resetMenu = {"Admin","Refresh","Sound recording","Technical issue","Logout","Menu","Cancel","Please Enter the admin password"};
+        String[] resetrecording = {"Press the microphone button to start recording. Press the button again to stop and save.",
+                "After recording is done, you can save the recording. You can also start over with a new recording by pressing the microphone button again.",
+                "Make sure your video is longer then 10s and less then 4min. After recording, click use video to save and upload in recording result screen."};
+
+
         defaultNotificaton = resetNotificaton;
         defaultMenu = resetMenu;
+        toast = resettoast;
+        recording = resetrecording;
         save(context);
     }
 
@@ -143,6 +209,7 @@ public class Texts {
     public String[] getDefaultNotificaton() {
         return defaultNotificaton;
     }
+
 
     public void setDefaultNotificaton(String[] defaultNotificaton) {
         this.defaultNotificaton = defaultNotificaton;
@@ -163,7 +230,19 @@ public class Texts {
         sb.append('\n');
         sb.append("MenuMessage =>");
         for (String str : defaultMenu) sb.append(str).append(" ");
+        sb.append('\n');
+        sb.append("toast =>");
+        for (String str : toast) sb.append(str).append(" ");
+        sb.append('\n');
+        sb.append("record =>");
+        for (String str : recording) sb.append(str).append(" ");
         return sb.toString();
     }
+    public void setToast(String[] toast) {
+        this.toast = toast;
+    }
 
+    public void setRecording(String[] recording) {
+        this.recording = recording;
+    }
 }

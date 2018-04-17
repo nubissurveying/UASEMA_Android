@@ -17,6 +17,7 @@ import java.util.Calendar;
 
 import edu.usc.cesr.ema_uas.Constants;
 import edu.usc.cesr.ema_uas.R;
+import edu.usc.cesr.ema_uas.model.Texts;
 import edu.usc.cesr.ema_uas.ui.MainActivity;
 import edu.usc.cesr.ema_uas.util.AlarmUtil;
 import edu.usc.cesr.ema_uas.util.DateUtil;
@@ -41,14 +42,15 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
 
 
 
-
+        Texts texts = Texts.getInstance(context);
         Log.i(TAG, "notification sent " + requestCode);
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         Calendar now = Calendar.getInstance();
-        String message = "Notification generated at " + DateUtil.stringifyTime(now) + ". ";
+        String title = texts.getNotification(Texts.NotificationContent.title) + " " + DateUtil.stringifyTimeHuman(now);
+        String message = "";
         if(requestCode % 3 == 0) now.add(Calendar.MINUTE, Constants.TIME_TO_TAKE_SURVEY);
         else now.add(Calendar.MINUTE, Constants.TIME_TO_TAKE_SURVEY - Constants.TIME_TO_REMINDER);
-        message += "No need to click after " + DateUtil.stringifyTimeHuman(now);
+        message += texts.getNotification(Texts.NotificationContent.message) + DateUtil.stringifyTimeHuman(now);
         if (Build.VERSION.SDK_INT >= 26) {
             Log.i(TAG, "comes to higher version");
             NotificationChannel channel = new NotificationChannel("Reminders", "Reminders", NotificationManager.IMPORTANCE_DEFAULT);
@@ -62,7 +64,7 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
 
             Notification.Builder mBuilder = new Notification.Builder(context, "Reminders")
                             .setSmallIcon(R.drawable.ic_launcher)
-                            .setContentTitle("Survey is ready " + requestCode)
+                            .setContentTitle(title)
                             .setContentText(message)
                             .setContentIntent(goBackPendingIntent)
                             .setAutoCancel(true);
@@ -73,7 +75,7 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
             Log.i(TAG, "comes to lower version");
             NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
                     .setSmallIcon(R.drawable.ic_launcher)
-                    .setContentTitle("Survey is ready " + requestCode)
+                    .setContentTitle(title)
                     .setContentText(message)
                     .setContentIntent(goBackPendingIntent)
                     .setAutoCancel(true);
