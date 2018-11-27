@@ -7,7 +7,7 @@ public class Constants {
 //    public static int TIME_BETWEEN_SURVEYS_PRO = 45;
     public static int TIME_BETWEEN_SURVEYS_PRO = 90;
     private static int TIME_TO_TAKE_SURVEY_PRO = 8;     //was 8
-    private static int TIME_TO_REMINDER_PRO = 3;
+    private static int TIME_TO_REMINDER_PRO = 4;
 
     public static final int TIME_BETWEEN_SURVEYS_DEV = 5;
     private static final int TIME_TO_TAKE_SURVEY_DEV = 2;

@@ -14,7 +14,7 @@ public class Survey implements Serializable {
     private Calendar date;
     private boolean taken;
     private boolean closed;
-
+    private Calendar lastClicked = null;
 
 
     private boolean internet;
@@ -50,6 +50,16 @@ public class Survey implements Serializable {
     }
     public Calendar getDate() {
         return date;
+    }
+
+    public Calendar getLastClicked(){
+        return this.lastClicked;
+    }
+
+    public void setLastClicked(Calendar lastClicked) { //this is actually 'first clicked'
+        if (this.lastClicked == null) { //only set if null
+            this.lastClicked = lastClicked;
+        }
     }
 
     public void setAsTaken(){

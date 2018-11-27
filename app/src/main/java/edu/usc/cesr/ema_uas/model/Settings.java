@@ -121,6 +121,13 @@ public class Settings {
         }
         save(context);
     }
+
+    public void setSurveyAndSave(Context context, int requestCode) {
+        Survey currentSurvey = getSurveyByCode(requestCode);
+        save(context);
+    }
+
+
     public void setClosedSurveyAndSave(Context context, int requestCode){
         Survey currentSurvey = getSurveyByCode(requestCode);
         if(currentSurvey != null){
@@ -137,9 +144,22 @@ public class Settings {
     public Survey getSurveyByTime(Calendar now){
         for(int i = 0; i < surveys.size(); i++){
             double timeDiffInMin = ((double) (now.getTimeInMillis() - surveys.get(i).getDate().getTimeInMillis())) /  (60 * 1000);
-            if(0 < timeDiffInMin && timeDiffInMin < Constants.TIME_TO_TAKE_SURVEY) return surveys.get(i);
-            else if( 0 < timeDiffInMin) surveys.get(i).setClosed();
-        } return null;
+
+            if (surveys.get(i).getLastClicked() != null) { //see if there was a 'last clicked'.. It is 8 minutes from that point
+                double timeDiffInMin2 = ((double) (now.getTimeInMillis() - surveys.get(i).getLastClicked().getTimeInMillis())) / (60 * 1000);
+
+                if(0 < timeDiffInMin2 && timeDiffInMin2 < Constants.TIME_TO_TAKE_SURVEY)
+                    return surveys.get(i);
+
+            }
+
+
+            if(0 < timeDiffInMin && timeDiffInMin < Constants.TIME_TO_TAKE_SURVEY)
+                return surveys.get(i);
+            else if( 0 < timeDiffInMin)
+                surveys.get(i).setClosed();
+        }
+        return null;
     }
     public boolean shouldShowSurvey(Calendar calendar){
         Survey currentSurvey = getSurveyByTime(calendar);
@@ -174,7 +194,10 @@ public class Settings {
         if(surveys != null){
             for(int i = 0; i < surveys.size(); i++){
                 Survey cur = surveys.get(i);
-                json.addProperty(String.valueOf(i + 1), DateUtil.stringifyAll(cur.getDate())+ " " + cur.getRequestCode() + " "+ (cur.isAlarmed()?"T":"F") + (cur.isInternet() ? "T":"F") + (cur.isTaken()? "T":"F") +(cur.isClosed()? "T" :"F") );
+                //only add alarmed and internet
+//                json.addProperty(String.valueOf(i + 1), DateUtil.stringifyAll(cur.getDate())+ " " + cur.getRequestCode() + " "+ (cur.isAlarmed()?"T":"F") + (cur.isInternet() ? "T":"F") + (cur.isTaken()? "T":"F") +(cur.isClosed()? "T" :"F") );
+                json.addProperty(String.valueOf(i + 1), DateUtil.stringifyAll(cur.getDate())+ " " + cur.getRequestCode() + " "+ (cur.isAlarmed()?"T":"F") + (cur.isInternet() ? "T":"F") );
+
             }
         }
         LogUtil.e("json string", json.toString());

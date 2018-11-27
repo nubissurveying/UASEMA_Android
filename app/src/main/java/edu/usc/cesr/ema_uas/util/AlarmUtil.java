@@ -32,7 +32,7 @@ public class AlarmUtil {
             mediaPlayer.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
             afd.close();
 
-            int MAX_VOLUME = 100;
+            int MAX_VOLUME = 120;
             int soundVolume = 50;
             float volume = (float) (1 - (Math.log(MAX_VOLUME - soundVolume) / Math.log(MAX_VOLUME)));
             mediaPlayer.setVolume(volume, volume);
@@ -59,7 +59,7 @@ public class AlarmUtil {
                     audioManager.setRingerMode(previousRingerMode);
                     audioManager.setStreamVolume(AudioManager.STREAM_ALARM, previousVolume, 0);
                 }
-            }, 2000);
+            }, 3000);
 
         } catch (Exception e) {
             e.printStackTrace();

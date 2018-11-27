@@ -29,7 +29,7 @@ public class Texts {
 
 
 
-    private String[] defaultMenu = {"Admin","Refresh","Sound recording","Technical issue","Logout","Menu","Cancel","Please Enter the admin password"};
+    private String[] defaultMenu = {"Admin","Refresh","Sound recording","Technical issue","Logout","Menu","Cancel","Please enter the admin password"};
     private String[] recording = {"Press the microphone button to start recording. Press the button again to stop and save.",
             "After recording is done, you can save the recording. You can also start over with a new recording by pressing the microphone button again.",
             "Make sure your video is longer then 10s and less then 4min. After recording, click use video to save and upload in recording result screen."};
@@ -182,7 +182,7 @@ public class Texts {
     public void clearAndSave(Context context){
         String[] resetNotificaton = {"Survey is ready", "No need to click after "};
         String[] resettoast = {"Logout", "Wrong password", "Please login first"};
-        String[] resetMenu = {"Admin","Refresh","Sound recording","Technical issue","Logout","Menu","Cancel","Please Enter the admin password"};
+        String[] resetMenu = {"Admin","Refresh","Sound recording","Technical issue","Logout","Menu","Cancel","Please enter the admin password"};
         String[] resetrecording = {"Press the microphone button to start recording. Press the button again to stop and save.",
                 "After recording is done, you can save the recording. You can also start over with a new recording by pressing the microphone button again.",
                 "Make sure your video is longer then 10s and less then 4min. After recording, click use video to save and upload in recording result screen."};

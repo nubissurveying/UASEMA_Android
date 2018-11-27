@@ -63,7 +63,7 @@ import edu.usc.cesr.ema_uas.webview.MyWebViewClient;
 @SuppressWarnings("FieldCanBeLocal")
 public class MainActivity extends AppCompatActivity {
     public static String URL = "URL";
-    private WebView webView;
+    public WebView webView;
     private ProgressDialog dialog;
     private Settings settings;
 
@@ -248,65 +248,79 @@ public class MainActivity extends AppCompatActivity {
 //        }
     }
     private void route(Settings settings){
-        Calendar now = Calendar.getInstance();
-
-//        UrlBuilder.build(UrlBuilder.PHONE_ALARM, settings, Calendar.getInstance(), true);
-        //  User is logged in and during survey
-        if(settings.isLoggedIn() && settings.allFieldsSet() && settings.shouldShowSurvey(now)) {
-//        if(true) {
-//        if(settings.isLoggedIn() && settings.allFieldsSet() && settings.shouldShowSurvey(now)) {
-//            Survey survey = settings.getSurveyByTime(Calendar.getInstance());
-//            Intent i = new Intent(this, AlarmActivity.class);
-//            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//            int requestCode =
-//                    (now.getTimeInMillis() - survey.getDate().getTimeInMillis() < Constants.TIME_TO_REMINDER * 60 * 1000) ?
-//                    survey.getRequestCode() : survey.getRequestCode() + 1;
-//
-//            i.putExtra(MyAlarmManager.REQUEST_CODE, requestCode);
-//            startActivity(i);
-//            finish();
-
-            settings = Settings.getInstance(this);
-            int requestCode = getIntent().getIntExtra(MyAlarmManager.REQUEST_CODE, 0);
-            int surveyCode = Survey.getSurveyCode(requestCode);
-            String timeTag = settings.getTimeTag(surveyCode);
-            Survey curr = settings.getSurveyByTime(now);
-            curr.setAlarmed(true);
-            curr.setInternet(hasInternet);
-
-            if(hasInternet) settings.setTakenSurveyAndSave(this,curr.getRequestCode());
-            alarmManager.cancelSingleAlarm(this, curr.getRequestCode() + 1);
-
-            String respondingTo = curr.getNotificationTag(now,settings.getTimeToReminder());
-            showWebView(UrlBuilder.build(UrlBuilder.PHONE_ALARM, settings, Calendar.getInstance(), true, respondingTo));
-//            showWebView(UrlBuilder.build(UrlBuilder.PHONE_ALARM, settings, Calendar.getInstance(), true)
-//                    + (timeTag == null ? "" : timeTag));
-            Log.e("MainActivity", "show survey");
-
-        //  User is logged in, is not during survey, and has not skipped previous but has no alarms set
-        }else if (settings.isLoggedIn() && settings.hasNoAlarms() && settings.allFieldsSet() && !settings.shouldShowSurvey(now) && !settings.skippedPrevious(now)){
-            showWebView(UrlBuilder.build(UrlBuilder.PHONE_NOALARMS, settings, now, true));
-
-
-        //  User is logged in, is not during survey, and has not skipped previous
-        }else if (settings.isLoggedIn() && settings.allFieldsSet() && !settings.shouldShowSurvey(now) && !settings.skippedPrevious(now)){
-            showWebView(UrlBuilder.build(UrlBuilder.PHONE_START, settings, now, true));
-
-
-        //  User is logged in, but has skipped previous
-        }else if (settings.isLoggedIn() && settings.allFieldsSet() && !settings.shouldShowSurvey(now) && settings.skippedPrevious(now)){
-            showWebView(UrlBuilder.build(UrlBuilder.PHONE_NOREACTION, settings, now, true));
-
-        //  UserId set from APK; is logged in, but has no start and end times;
-        } else if (settings.isLoggedIn() && !settings.allFieldsSet()){
-            showWebView(UrlBuilder.build(UrlBuilder.PHONE_INIT_NODATE, settings, now,  true));
-
-        //  No user; either opted out, or started with APK with no RTID
-        } else if (!settings.isLoggedIn()) {
-            showWebView(UrlBuilder.build("testandroid", settings, now,  false));
-            //showWebView(UrlBuilder.build(UrlBuilder.PHONE_START, settings, now,  false));
+        if (!hasInternet){
+            this.showMessage("No internet connection detected. Make sure you are connected to the cellular network or wifi.");
         }
+        else {
 
+
+            Calendar now = Calendar.getInstance();
+
+            //        UrlBuilder.build(UrlBuilder.PHONE_ALARM, settings, Calendar.getInstance(), true);
+            //  User is logged in and during survey
+            if (settings.isLoggedIn() && settings.allFieldsSet() && settings.shouldShowSurvey(now)) {
+                //        if(true) {
+                //        if(settings.isLoggedIn() && settings.allFieldsSet() && settings.shouldShowSurvey(now)) {
+                //            Survey survey = settings.getSurveyByTime(Calendar.getInstance());
+                //            Intent i = new Intent(this, AlarmActivity.class);
+                //            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                //            int requestCode =
+                //                    (now.getTimeInMillis() - survey.getDate().getTimeInMillis() < Constants.TIME_TO_REMINDER * 60 * 1000) ?
+                //                    survey.getRequestCode() : survey.getRequestCode() + 1;
+                //
+                //            i.putExtra(MyAlarmManager.REQUEST_CODE, requestCode);
+                //            startActivity(i);
+                //            finish();
+
+                settings = Settings.getInstance(this);
+                int requestCode = getIntent().getIntExtra(MyAlarmManager.REQUEST_CODE, 0);
+                int surveyCode = Survey.getSurveyCode(requestCode);
+                String timeTag = settings.getTimeTag(surveyCode);
+                Survey curr = settings.getSurveyByTime(now);
+                curr.setAlarmed(true);
+                curr.setInternet(hasInternet);
+
+                curr.setLastClicked(now); //set this to now.. 8 minutes start after this click
+
+                if (hasInternet) {
+                    settings.setTakenSurveyAndSave(this, curr.getRequestCode());
+                }
+                else {
+                    settings.setSurveyAndSave(this, curr.getRequestCode());
+                }
+
+                alarmManager.cancelSingleAlarm(this, curr.getRequestCode() + 1);
+
+                String respondingTo = curr.getNotificationTag(now, settings.getTimeToReminder());
+                showWebView(UrlBuilder.build(UrlBuilder.PHONE_ALARM, settings, Calendar.getInstance(), true, respondingTo));
+                //            showWebView(UrlBuilder.build(UrlBuilder.PHONE_ALARM, settings, Calendar.getInstance(), true)
+                //                    + (timeTag == null ? "" : timeTag));
+                Log.e("MainActivity", "show survey");
+
+                //  User is logged in, is not during survey, and has not skipped previous but has no alarms set
+            } else if (settings.isLoggedIn() && settings.hasNoAlarms() && settings.allFieldsSet() && !settings.shouldShowSurvey(now) && !settings.skippedPrevious(now)) {
+                showWebView(UrlBuilder.build(UrlBuilder.PHONE_NOALARMS, settings, now, true));
+
+
+                //  User is logged in, is not during survey, and has not skipped previous
+            } else if (settings.isLoggedIn() && settings.allFieldsSet() && !settings.shouldShowSurvey(now) && !settings.skippedPrevious(now)) {
+                showWebView(UrlBuilder.build(UrlBuilder.PHONE_START, settings, now, true));
+
+
+                //  User is logged in, but has skipped previous
+            } else if (settings.isLoggedIn() && settings.allFieldsSet() && !settings.shouldShowSurvey(now) && settings.skippedPrevious(now)) {
+                showWebView(UrlBuilder.build(UrlBuilder.PHONE_NOREACTION, settings, now, true));
+
+                //  UserId set from APK; is logged in, but has no start and end times;
+            } else if (settings.isLoggedIn() && !settings.allFieldsSet()) {
+                showWebView(UrlBuilder.build(UrlBuilder.PHONE_INIT_NODATE, settings, now, true));
+
+                //  No user; either opted out, or started with APK with no RTID
+            } else if (!settings.isLoggedIn()) {
+                showWebView(UrlBuilder.build("testandroid", settings, now, false));
+                //showWebView(UrlBuilder.build(UrlBuilder.PHONE_START, settings, now,  false));
+            }
+        }
     }
 
     public ProgressDialog getDialog() {
@@ -354,7 +368,8 @@ public class MainActivity extends AppCompatActivity {
                 webView.loadUrl(url);
 
             } else {
-                webView.loadDataWithBaseURL(null, "<html><body><h3><font face=arial color=#5691ea>" +  "No internet connection detected. Make sure you are connected to the cellular network or wifi." + "</font></h3></body></html>", "text/html", "utf-8", null);
+                this.showMessage("No internet connection detected. Make sure you are connected to the cellular network or wifi.");
+                //webView.loadDataWithBaseURL(null, "<html><body><h3><font face=arial color=#5691ea>" +  "No internet connection detected. Make sure you are connected to the cellular network or wifi." + "</font></h3></body></html>", "text/html", "utf-8", null);
             }
         }
         catch (Exception e){
@@ -587,6 +602,8 @@ public class MainActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent){
             ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
             hasInternet = (cm.getActiveNetworkInfo() != null);
+            //reload page!
+            route(settings);
         }
     };
 
@@ -611,6 +628,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
+    public void showMessage(String message){
+        webView.loadDataWithBaseURL(null, "<html><body><h3><font face=arial color=#5691ea>" +  message + "</font></h3></body></html>", "text/html", "utf-8", null);
+    }
 
 }

@@ -7,6 +7,7 @@ import android.webkit.ConsoleMessage;
 import android.webkit.CookieManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
+import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -89,6 +90,9 @@ public class MyChromeViewClient  extends WebChromeClient {
         result.cancel();
         return true;
     }
+
+
+
 
 
 }

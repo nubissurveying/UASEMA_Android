@@ -9,6 +9,7 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 import edu.usc.cesr.ema_uas.Constants;
 import edu.usc.cesr.ema_uas.R;
@@ -45,12 +46,13 @@ public class MyWebViewClient extends WebViewClient {
 
     @Override
     public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
-        //        Toast.makeText(getBaseContext(), "WebView Error",Toast.LENGTH_SHORT).show();
+        super.onReceivedError(view, request, error);
+        Toast.makeText(this.activity, "WebView Error",Toast.LENGTH_SHORT).show();
         // V155
         if (android.os.Build.VERSION.SDK_INT >= 23) {
             //  FirebaseCrash.report(new Exception("Webview Error:" + error.getDescription() + " at " + request.getUrl()));
         }
-        super.onReceivedError(view, request, error);
+        this.activity.showMessage("Webview error. Please check your internet connection");
     }
 
     /*
@@ -58,11 +60,33 @@ public class MyWebViewClient extends WebViewClient {
     */
     @Override
     public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
+        super.onReceivedHttpError(view, request, errorResponse);
         //      Toast.makeText(getBaseContext(), "WebView Error", Toast.LENGTH_SHORT).show();
         // V155
         if (android.os.Build.VERSION.SDK_INT >= 23) {
             //  FirebaseCrash.report(new Exception("Webview Error:" + errorResponse.getReasonPhrase()  + " at " + request.getUrl()));
         }
-        super.onReceivedHttpError(view, request, errorResponse);
+        this.activity.showMessage("Webview error. Please check your internet connection");
     }
+
+
+
+
+    @SuppressWarnings("deprecation")
+    public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+        super.onReceivedError(view, errorCode, description, failingUrl);
+        //handleError(view, errorCode, description, uri);
+       // if (android.os.Build.VERSION.SDK_INT >= 23) {
+        if (errorCode == -2){ //no internet
+            this.activity.showMessage("No internet connection detected. Make sure you are connected to the cellular network or wifi.");
+        }
+        else {
+            this.activity.showMessage("Error: " + description);
+//            Toast.makeText(this.activity, "WebView Error",Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+
+
 }

@@ -45,12 +45,21 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
         Texts texts = Texts.getInstance(context);
         Log.i(TAG, "notification sent " + requestCode);
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        Calendar starttm = Calendar.getInstance();
         Calendar now = Calendar.getInstance();
         String title = texts.getNotification(Texts.NotificationContent.title) + " " + DateUtil.stringifyTimeHuman(now);
         String message = "";
-        if(requestCode % 3 == 0) now.add(Calendar.MINUTE, Constants.TIME_TO_TAKE_SURVEY);
-        else now.add(Calendar.MINUTE, Constants.TIME_TO_TAKE_SURVEY - Constants.TIME_TO_REMINDER);
-        message += texts.getNotification(Texts.NotificationContent.message) + DateUtil.stringifyTimeHuman(now);
+        if(requestCode % 3 == 0) {
+            now.add(Calendar.MINUTE, Constants.TIME_TO_TAKE_SURVEY);
+            message = "You have between " + DateUtil.stringifyTimeHuman(starttm) + " and " + DateUtil.stringifyTimeHuman(now) + " to start this survey";
+        }
+        else {
+            now.add(Calendar.MINUTE, Constants.TIME_TO_TAKE_SURVEY - Constants.TIME_TO_REMINDER);
+            message = "Please complete the survey within the next few minutes";
+        }
+        //message += texts.getNotification(Texts.NotificationContent.message) + DateUtil.stringifyTimeHuman(now);
+
+
         if (Build.VERSION.SDK_INT >= 26) {
             Log.i(TAG, "comes to higher version");
             NotificationChannel channel = new NotificationChannel("Reminders", "Reminders", NotificationManager.IMPORTANCE_DEFAULT);
