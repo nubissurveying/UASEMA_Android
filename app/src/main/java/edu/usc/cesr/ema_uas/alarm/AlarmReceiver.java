@@ -50,11 +50,11 @@ public class AlarmReceiver extends WakefulBroadcastReceiver {
         String title = texts.getNotification(Texts.NotificationContent.title) + " " + DateUtil.stringifyTimeHuman(now);
         String message = "";
         if(requestCode % 3 == 0) {
-            now.add(Calendar.MINUTE, Constants.TIME_TO_TAKE_SURVEY);
+            now.add(Calendar.MINUTE, Constants.TIME_TO_TAKE_SURVEY_DISPLAY);
             message = "You have between " + DateUtil.stringifyTimeHuman(starttm) + " and " + DateUtil.stringifyTimeHuman(now) + " to start this survey";
         }
         else {
-            now.add(Calendar.MINUTE, Constants.TIME_TO_TAKE_SURVEY - Constants.TIME_TO_REMINDER);
+            now.add(Calendar.MINUTE, Constants.TIME_TO_TAKE_SURVEY_DISPLAY - Constants.TIME_TO_REMINDER);
             message = "Please complete the survey within the next few minutes";
         }
         //message += texts.getNotification(Texts.NotificationContent.message) + DateUtil.stringifyTimeHuman(now);

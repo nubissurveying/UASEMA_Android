@@ -6,7 +6,8 @@ public class Constants {
 
 //    public static int TIME_BETWEEN_SURVEYS_PRO = 45;
     public static int TIME_BETWEEN_SURVEYS_PRO = 90;
-    private static int TIME_TO_TAKE_SURVEY_PRO = 8;     //was 8
+    private static int TIME_TO_TAKE_SURVEY_PRO = 16;     //was 8
+    private static int TIME_TO_TAKE_SURVEY_DISPLAY_PRO = 8;
     private static int TIME_TO_REMINDER_PRO = 4;
 
     public static final int TIME_BETWEEN_SURVEYS_DEV = 5;
@@ -14,6 +15,7 @@ public class Constants {
     private static final int TIME_TO_REMINDER_DEV = 1;
 
     public static  int TIME_TO_TAKE_SURVEY = isDemo ? TIME_TO_TAKE_SURVEY_DEV : TIME_TO_TAKE_SURVEY_PRO;
+    public static int TIME_TO_TAKE_SURVEY_DISPLAY = TIME_TO_TAKE_SURVEY_DISPLAY_PRO;
     public static  int TIME_TO_REMINDER = isDemo ? TIME_TO_REMINDER_DEV : TIME_TO_REMINDER_PRO;
 
     public static final String CookieKey = "CookieKeyForEMA";

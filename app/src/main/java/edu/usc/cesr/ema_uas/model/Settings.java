@@ -41,8 +41,9 @@ public class Settings {
 
 
 
-    private int timeToTakeSurvey = 8;
+    private int timeToTakeSurvey = 16;
     private int timeToReminder = 1;
+    private int timeToTakeSurveyDisplay = 8;
 
 
 
@@ -368,10 +369,18 @@ public class Settings {
     public int getTimeToTakeSurvey() {
         return timeToTakeSurvey;
     }
+    public int getTimeToTakeSurveyDispay(){
+        return timeToTakeSurveyDisplay;
+    }
 
     public void setTimeToTakeSurvey(int timeToTakeSurvey) {
         this.timeToTakeSurvey = timeToTakeSurvey;
     }
+
+    public void setTimeToTakeSurveyDisplay(int timeToTakeSurveyDisplay) {
+        this.timeToTakeSurveyDisplay = timeToTakeSurveyDisplay;
+    }
+
 
     public int getTimeToReminder() {
         return timeToReminder;

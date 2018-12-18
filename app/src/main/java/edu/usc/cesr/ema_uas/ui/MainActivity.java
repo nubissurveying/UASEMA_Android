@@ -145,6 +145,7 @@ public class MainActivity extends AppCompatActivity {
 
         Constants.TIME_TO_REMINDER = settings.getTimeToReminder();
         Constants.TIME_TO_TAKE_SURVEY = settings.getTimeToTakeSurvey();
+        Constants.TIME_TO_TAKE_SURVEY_DISPLAY = settings.getTimeToTakeSurveyDispay();
 
         // No longer reading participant id from downloaded apk
         // if(settings.getRtid() == null){
